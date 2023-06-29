@@ -4,7 +4,9 @@
       "id": "424027533:424027533",
       "data": {
         "__scenes": {},
-        "type": "done"
+        "userIdDB": "3ef52af9-12d8-4a3b-b3fb-ccece7c926f2",
+        "type": "admin",
+        "isAdmin": true
       }
     }
   ]

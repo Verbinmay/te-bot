@@ -8,14 +8,15 @@ import * as LocalSession from 'telegraf-session-local';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppService } from './app.service';
 import { AppUpdate } from './app.update';
-import { join } from 'path';
-import { TaskEntity } from './task.entity';
+import { Answer } from './entities/answer.entity';
+import { Question } from './entities/question.entity';
+import { User } from './entities/user.entity';
+import { UserService } from './services/user.service';
 
 const sessions = new LocalSession({ database: 'session_db.json' });
 
-const entities = [TaskEntity];
+const entities = [User, Answer, Question];
 
 @Module({
   imports: [
@@ -47,6 +48,6 @@ const entities = [TaskEntity];
     TypeOrmModule.forFeature([...entities]),
   ],
   controllers: [],
-  providers: [AppService, AppUpdate],
+  providers: [AppUpdate, UserService],
 })
 export class AppModule {}
