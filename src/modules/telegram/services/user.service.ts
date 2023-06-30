@@ -1,9 +1,11 @@
 import { log } from 'console';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/modules/telegram/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreateUserDto } from '../dto/user/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,9 +14,14 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(tgUserId: number) {
+  async create(a: CreateUserDto) {
     const user = new User();
-    user.tgUserId = tgUserId;
+    user.telegramId = a.telegramId;
+    user.role = a.role;
+    user.firstName = a.firstName;
+    user.lastName = a.lastName;
+    user.userName = a.userName;
+
     await this.userRepository.create(user);
     return await this.userRepository.save(user);
   }
@@ -22,13 +29,32 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async hiAdmin(userIdFromDb: string) {
-    const user = await this.getById(userIdFromDb);
-    console.log(user);
-    if (!user) return null;
-    user.isAdmin = true;
-    return await this.update(user);
+  async removeAdmin(telegramId: string): Promise<boolean> {
+    const user: User | null = await this.getByTelegramId(telegramId);
+    if (!user) return false;
+    user.role = 'user';
+    const notAdmin = await this.userRepository.save(user);
+
+    return notAdmin.role === 'user';
   }
+  async addAdmin(userName: string): Promise<boolean> {
+    const user: User | null = await this.userRepository.findOneBy({
+      userName: userName,
+    });
+    if (!user) return false;
+    user.role = 'admin';
+    const notAdmin = await this.userRepository.save(user);
+
+    return notAdmin.role === 'admin';
+  }
+
+  // async hiAdmin(userIdFromDb: string) {
+  //   const user = await this.getById(userIdFromDb);
+  //   console.log(user);
+  //   if (!user) return null;
+  //   user.isAdmin = true;
+  //   return await this.update(user);
+  // }
   // async getAll() {
   //   return this.taskRepository.find();
   // }
@@ -46,10 +72,20 @@ export class UserService {
   //   return this.taskRepository.count();
   // }
 
-  async getById(id: string) {
+  // async getById(id: string) {
+  //   return await this.userRepository.findOne({
+  //     relations: { answers: true },
+  //     where: { id: id },
+  //   });
+  // }
+  async getByTelegramId(telegramId: string) {
     return await this.userRepository.findOne({
-      relations: { answers: true },
-      where: { id: id },
+      where: { telegramId: telegramId },
+    });
+  }
+  async getAllAdministrators() {
+    return await this.userRepository.find({
+      where: { role: 'admin' },
     });
   }
   // async doneTask(id: number) {

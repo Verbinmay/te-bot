@@ -1,7 +1,7 @@
 import { log } from 'console';
-import { CreateAnswerDto } from 'src/dto/answer/create-answer-dto';
-import { Answer } from 'src/entities/answer.entity';
-import { User } from 'src/entities/user.entity';
+import { CreateAnswerDto } from 'src/modules/telegram/dto/answer/create-answer-dto';
+import { Answer } from 'src/modules/telegram/entities/answer.entity';
+import { User } from 'src/modules/telegram/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';

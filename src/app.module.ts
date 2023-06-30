@@ -3,30 +3,31 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 ConfigModule.forRoot();
 
 import { TelegrafModule } from 'nestjs-telegraf';
-import * as LocalSession from 'telegraf-session-local';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppUpdate } from './app.update';
-import { Answer } from './entities/answer.entity';
-import { Question } from './entities/question.entity';
-import { User } from './entities/user.entity';
-import { UserService } from './services/user.service';
+import { AppUpdate } from './old/app.update';
+import { Answer } from './modules/telegram/entities/answer.entity';
+import { Question } from './modules/telegram/entities/question.entity';
+import { User } from './modules/telegram/entities/user.entity';
+import { UserService } from './modules/telegram/services/user.service';
+import { sessionMiddleware } from './modules/telegram/middlewares/session.middleware';
+import { TelegramModule } from './modules/telegram/telegram.module';
 
-const sessions = new LocalSession({ database: 'session_db.json' });
-
-const entities = [User, Answer, Question];
+export const entities = [User, Answer, Question];
 
 @Module({
   imports: [
+    TelegramModule,
+    ConfigModule.forRoot(),
     TelegrafModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        middlewares: [sessions.middleware()],
-        token: configService.get('TOKEN'),
-      }),
       inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        token: configService.get<string>('TOKEN'),
+        middlewares: [sessionMiddleware],
+      }),
     }),
     //forRootAsync данные из конфиг сервиса
     TypeOrmModule.forRootAsync({
@@ -45,9 +46,6 @@ const entities = [User, Answer, Question];
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([...entities]),
   ],
-  controllers: [],
-  providers: [AppUpdate, UserService],
 })
 export class AppModule {}

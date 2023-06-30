@@ -11,8 +11,8 @@ export class Question {
   @PrimaryGeneratedColumn('increment')
   public id!: number;
 
-  @Column({ length: 500 })
-  public name: string;
+  @Column('text')
+  public body: string;
 
   @Column('text')
   public correctAnswer: string;
@@ -31,5 +31,5 @@ export class Question {
   public updatedAt: Date | null = null;
 
   @Column({ type: 'boolean', default: false })
-  public isPublished = true;
+  public isPublished = false;
 }

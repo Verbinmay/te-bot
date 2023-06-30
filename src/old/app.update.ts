@@ -23,18 +23,25 @@ import {
   readyButtons,
   startTwentyQuestions,
 } from './app.buttons';
+import {
+  Message_,
+  Message_Inline,
+} from '../modules/telegram/dto/types/message_.type';
+import {
+  arrayQuestions,
+  createWord,
+  showList,
+} from '../modules/telegram/utils/app.utils';
 import { log } from 'console';
 import { Telegraf, Telegram } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
 import { MessageEntity } from 'telegraf/typings/core/types/typegram';
-import { inlineKeyboard } from 'telegraf/typings/markup';
+import { forceReply, inlineKeyboard } from 'telegraf/typings/markup';
 
-import { User } from './entities/user.entity';
+import { User } from '../modules/telegram/entities/user.entity';
+import { UserService } from '../modules/telegram/services/user.service';
 // import { AppService } from './services/question.service';
-import { UserService } from './services/user.service';
-import { arrayQuestions, createWord, showList } from './app.utils';
 import { Context } from './context.interface';
-import { Message_, Message_Inline } from './type';
 
 @Update()
 export class AppUpdate {
@@ -91,12 +98,23 @@ export class AppUpdate {
   //   await ctx.reply(showList(todos));
   // }
 
+  /** @Hears(/привет/qmi)  это регулярное выражение будет реагировать на привет1 */
+
   @Hears(SA_adminOpen)
   async SA_adminOpen(ctx: Context) {
-    await ctx.reply(
-      'https://tlgrm.eu/_/stickers/697/ba1/697ba160-9c77-3b1a-9d97-86a9ce75ff4d/110.webp',
-      SA_Auth(),
+    const user: User | null = await this.userService.getById(
+      ctx.session.userIdDB,
     );
+
+    if (user.isAdmin === true) {
+      ctx.session.type = 'admin';
+      ctx.reply('Приятной работы, шеф 😼', SA_Buttons());
+      return;
+    }
+
+    log('vvodi');
+    ctx.session.type = 'SA_auth';
+    await ctx.reply('Введи логин и пароль через | ');
   }
   @Action(SA_auth)
   async SA_auth(ctx: Context) {}

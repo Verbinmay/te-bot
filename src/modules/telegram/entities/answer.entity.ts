@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { answerStatus } from 'src/dto/answer/create-answer-dto';
+import { answerStatus } from 'src/modules/telegram/dto/answer/create-answer-dto';
 
 import { User } from './user.entity';
 
