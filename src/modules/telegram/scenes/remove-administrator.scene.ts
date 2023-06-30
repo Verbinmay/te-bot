@@ -3,6 +3,7 @@ import {
   EDIT_ADMINISTRATORS_SCENE,
   START_MAIN_SCENE,
 } from '../constants/scenes';
+import { log } from 'console';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ContextSceneType } from '../dto/types/context.type';
@@ -12,6 +13,7 @@ import { MS_TYPE_AN_ADMIN_ID } from '../constants/messages.const';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { getMessageText } from '../utils/get-message-text';
+import { showArrayOfObjects } from '../utils/show-users-or-admins';
 
 @Scene(DELETE_ADMINISTRATOR_SCENE)
 export class RemoveAdministratorScene {
@@ -20,6 +22,7 @@ export class RemoveAdministratorScene {
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
     const administratorsFromDb: Array<User> =
       await this.userService.getAllAdministrators();
+
     const administratorsViewModel: Array<SA_ViewAdminDto> =
       administratorsFromDb.map((a) => {
         return {
@@ -31,12 +34,17 @@ export class RemoveAdministratorScene {
           createdAt: a.createdAt,
         };
       });
+
     const administrators: string = showArrayOfObjects(administratorsViewModel);
     await ctx.reply(administrators);
 
     await ctx.reply(MS_TYPE_AN_ADMIN_ID, {
       reply_markup: {
-        keyboard: [[{ text: BACK_TO_PREVIOUS_MENU }]],
+        resize_keyboard: true,
+        keyboard: [
+          [{ text: BACK_TO_PREVIOUS_MENU }],
+          [{ text: BACK_TO_MAIN_MENU }],
+        ],
       },
     });
   }
@@ -48,7 +56,7 @@ export class RemoveAdministratorScene {
       if (text === BACK_TO_PREVIOUS_MENU) {
         await ctx.scene.enter(EDIT_ADMINISTRATORS_SCENE);
       } else if (text === BACK_TO_MAIN_MENU) {
-        await ctx.scene.enter(START_MAIN_SCENE, ctx.scene.state);
+        await ctx.scene.enter(START_MAIN_SCENE);
       } else if (!isNaN(Number(text.trim()))) {
         const removedAdmin: boolean = await this.userService.removeAdmin(text);
         if (removedAdmin) {

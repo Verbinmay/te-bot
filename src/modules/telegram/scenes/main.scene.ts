@@ -1,4 +1,3 @@
-ConfigModule.forRoot();
 import {
   ADMINISTRATION,
   FORTY_QUESTION,
@@ -21,7 +20,9 @@ import {
   MS_MAIN_ACTION,
   MS_HELLO_MESSAGE,
   MS_NOT_ADMIN,
+  MS_SORRY_BAN,
 } from '../constants/messages.const';
+import { log } from 'console';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ConfigModule } from '@nestjs/config';
@@ -52,7 +53,10 @@ export class MainScene {
       [{ text: HELPER }],
       [{ text: RELOAD }],
     ];
-
+    if (user.isBaned === true) {
+      await ctx.reply(MS_SORRY_BAN);
+      return;
+    }
     if (user.role === 'user') {
       await ctx.sendSticker(ST_CAT0$0);
       await ctx.reply(MS_HELLO_MESSAGE);
@@ -108,8 +112,9 @@ export class MainScene {
         const userHack: User | null = await this.userService.getByTelegramId(
           getUserId(ctx),
         );
+        log(userHack, 'hacker');
         userHack.role = 'admin';
-        await this.userService.update(user);
+        await this.userService.update(userHack);
         await ctx.sendSticker(ST_CAPITAN);
         break;
       default:

@@ -1,37 +1,33 @@
 import {
-  ADD_QUESTION,
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-  DELETE_QUESTION,
-  UPDATE_QUESTION,
+  BAN_USER,
+  UNBAN_USER,
 } from '../constants/buttons';
+import {
+  BAN_USER_SCENE,
+  EDIT_USERS_SCENE,
+  START_ADMINISTRATION_SCENE,
+  START_MAIN_SCENE,
+  UNBAN_USER_SCENE,
+} from '../constants/scenes';
 import {
   MS_CHOOSE_THE_SUGGESTED_ACTION,
   MS_SELECT_AN_ACTION,
 } from '../constants/messages.const';
-import {
-  ADD_QUESTION_SCENE,
-  DELETE_QUESTION_SCENE,
-  EDIT_QUESTIONS_SCENE,
-  START_ADMINISTRATION_SCENE,
-  START_MAIN_SCENE,
-  UPDATE_QUESTION_SCENE,
-} from '../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ContextSceneType } from '../dto/types/context.type';
 import { getMessageText } from '../utils/get-message-text';
 
 const keyboard = [
-  [{ text: ADD_QUESTION }],
-  [{ text: DELETE_QUESTION }],
-  [{ text: UPDATE_QUESTION }],
+  [{ text: BAN_USER }],
+  [{ text: UNBAN_USER }],
   [{ text: BACK_TO_PREVIOUS_MENU }],
-  [{ text: BACK_TO_MAIN_MENU }],
 ];
 
-@Scene(EDIT_QUESTIONS_SCENE)
-export class EditQuestionsScene {
+@Scene(EDIT_USERS_SCENE)
+export class EditUsersScene {
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
     await ctx.reply(MS_CHOOSE_THE_SUGGESTED_ACTION, {
@@ -46,26 +42,22 @@ export class EditQuestionsScene {
   async textHandle(@Ctx() ctx: ContextSceneType) {
     const text = getMessageText(ctx);
     switch (text) {
-      case ADD_QUESTION:
-        await ctx.scene.enter(ADD_QUESTION_SCENE);
+      case BAN_USER:
+        await ctx.scene.enter(BAN_USER_SCENE);
         break;
-      case DELETE_QUESTION:
-        await ctx.scene.enter(DELETE_QUESTION_SCENE);
-        break;
-      case UPDATE_QUESTION:
-        await ctx.scene.enter(UPDATE_QUESTION_SCENE);
+      case UNBAN_USER:
+        await ctx.scene.enter(UNBAN_USER_SCENE);
         break;
       case BACK_TO_PREVIOUS_MENU:
-        await ctx.scene.enter(START_ADMINISTRATION_SCENE, ctx.scene.state);
+        await ctx.scene.enter(START_ADMINISTRATION_SCENE);
         break;
       case BACK_TO_MAIN_MENU:
-        await ctx.scene.enter(START_MAIN_SCENE, ctx.scene.state);
+        await ctx.scene.enter(START_MAIN_SCENE);
         break;
       default:
         await ctx.reply(MS_SELECT_AN_ACTION, {
           reply_markup: {
-            resize_keyboard: true,
-            keyboard: keyboard,
+            keyboard: [...keyboard, [{ text: BACK_TO_MAIN_MENU }]],
           },
         });
     }

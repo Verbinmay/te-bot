@@ -16,23 +16,23 @@ export class AnswerService {
     private readonly answerRepository: Repository<Answer>,
     private readonly userService: UserService,
   ) {}
-  //TODO check that in db
-  async create(a: CreateAnswerDto) {
-    const user: User | null = await this.userService.getById(a.userIdFromDb);
 
-    if (!user) return new Error('PROBLEM WITH USER IN DB');
-    const answer = new Answer();
-    answer.user = user;
-    answer.questionId = a.questionId;
-    answer.answerStatus = a.answerStatus;
-    if (a.answerStatus === 'Incorrect') {
-      answer.correctAnswer = a.correctAnswer;
-      answer.wrongAnswer = a.wrongAnswer;
-    }
+  // async create(a: CreateAnswerDto) {
+  //   const user: User | null = await this.userService.getById(a.userIdFromDb);
 
-    await this.answerRepository.create(answer);
-    return await this.answerRepository.save(answer);
-  }
+  //   if (!user) return new Error('PROBLEM WITH USER IN DB');
+  //   const answer = new Answer();
+  //   answer.user = user;
+  //   answer.questionId = a.questionId;
+  //   answer.answerStatus = a.answerStatus;
+  //   if (a.answerStatus === 'Incorrect') {
+  //     answer.correctAnswer = a.correctAnswer;
+  //     answer.wrongAnswer = a.wrongAnswer;
+  //   }
+
+  //   await this.answerRepository.create(answer);
+  //   return await this.answerRepository.save(answer);
+  // }
   // async getAll() {
   //   return this.taskRepository.find();
   // }

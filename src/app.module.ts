@@ -1,21 +1,17 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-ConfigModule.forRoot();
-
 import { TelegrafModule } from 'nestjs-telegraf';
 
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppUpdate } from './old/app.update';
 import { Answer } from './modules/telegram/entities/answer.entity';
+import { CreatorQuestion } from './modules/telegram/entities/question-creator.entity';
 import { Question } from './modules/telegram/entities/question.entity';
 import { User } from './modules/telegram/entities/user.entity';
-import { UserService } from './modules/telegram/services/user.service';
 import { sessionMiddleware } from './modules/telegram/middlewares/session.middleware';
 import { TelegramModule } from './modules/telegram/telegram.module';
 
-export const entities = [User, Answer, Question];
+export const entities = [User, Answer, Question, CreatorQuestion];
 
 @Module({
   imports: [

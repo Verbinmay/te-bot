@@ -26,6 +26,9 @@ export class User {
   @Column()
   public lastName: string;
 
+  @Column('boolean', { default: false })
+  public isBaned = false;
+
   @Column({ type: 'enum', enum: ['admin', 'user'] })
   public role: Roles;
 

@@ -2,14 +2,14 @@ import {
   MS_DONT_USE_PHONE_NUMBER,
   MS_REGISTRATION,
 } from '../constants/messages.const';
-import { Scene, SceneEnter, Ctx, On } from 'nestjs-telegraf';
-
-import { ContextSceneType } from '../dto/types/context.type';
-import { AUTHORIZATION } from '../constants/buttons';
 import {
   START_AUTHORIZATION_SCENE,
   START_MAIN_SCENE,
 } from '../constants/scenes';
+import { Scene, SceneEnter, Ctx, On } from 'nestjs-telegraf';
+
+import { ContextSceneType } from '../dto/types/context.type';
+import { AUTHORIZATION } from '../constants/buttons';
 import { UserService } from '../services/user.service';
 
 @Scene(START_AUTHORIZATION_SCENE)
@@ -29,13 +29,13 @@ export class AuthorizationScene {
 
   @On('contact')
   async phone(@Ctx() ctx) {
-    const contact = ctx.message.contact;
+    const contact = ctx.message.from;
     await this.userService.create({
       role: 'user',
-      firstName: contact.first_name,
-      lastName: contact.last_name,
-      userName: ctx.message.username,
-      telegramId: contact.user_id,
+      firstName: contact.first_name ?? '-',
+      lastName: contact.last_name ?? '-',
+      userName: contact.username,
+      telegramId: contact.id.toString(),
     });
     await ctx.scene.enter(START_MAIN_SCENE);
   }

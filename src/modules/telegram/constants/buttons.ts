@@ -19,14 +19,15 @@ export const UPDATE_QUESTION = 'Изменить вопрос';
 export const ADD_QUESTION_CREATOR = 'Отправить вопрос';
 export const ADD_CORRECT_ANSWER_CREATOR = 'Отправить ПРАВИЛЬНЫЙ ответ';
 export const ADD_FIRST_WRONG_ANSWER_CREATOR =
-  'Отправить первый неправильный ответ ';
+  'Отправить первый неправильный ответ';
 export const ADD_SECOND_WRONG_ANSWER_CREATOR =
   'Отправить второй неправильный ответ';
 export const ADD_THIRD_WRONG_ANSWER_CREATOR =
   'Отправь третий неправильный ответ';
-export const SAVE_QUESTION_CREATOR = 'Отправить вопрос на проверку';
-
+export const SAVE_QUESTION_CREATOR = 'СОХРАНИТЬ';
+export const CHANGED_MY_MIND = 'Не готов 🏃🏻';
+export const BAN_USER = 'Забанить пользователя';
+export const UNBAN_USER = 'Разбанить пользователя';
 //------------//
 
 export const startTwentyQuestions = 'Погнали 💪🏻';
-export const brakeTwentyQuestions = 'Не готов 🏃🏻';

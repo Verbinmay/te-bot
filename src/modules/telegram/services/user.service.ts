@@ -47,6 +47,21 @@ export class UserService {
 
     return notAdmin.role === 'admin';
   }
+  async getByTelegramId(telegramId: string) {
+    return await this.userRepository.findOne({
+      where: { telegramId: telegramId },
+    });
+  }
+  async getByUserName(userName: string) {
+    return await this.userRepository.findOne({
+      where: { userName: userName },
+    });
+  }
+  async getAllAdministrators() {
+    return await this.userRepository.find({
+      where: { role: 'admin' },
+    });
+  }
 
   // async hiAdmin(userIdFromDb: string) {
   //   const user = await this.getById(userIdFromDb);
@@ -78,16 +93,6 @@ export class UserService {
   //     where: { id: id },
   //   });
   // }
-  async getByTelegramId(telegramId: string) {
-    return await this.userRepository.findOne({
-      where: { telegramId: telegramId },
-    });
-  }
-  async getAllAdministrators() {
-    return await this.userRepository.find({
-      where: { role: 'admin' },
-    });
-  }
   // async doneTask(id: number) {
   //   const task: TaskEntity = await this.taskRepository.findOneBy({ id: id });
 

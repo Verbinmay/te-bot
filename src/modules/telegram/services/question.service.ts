@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
@@ -24,6 +23,19 @@ export class QuestionService {
     question.isPublished = true;
 
     await this.questionRepository.create(question);
+    return this.questionRepository.save(question);
+  }
+  async deleteById(id: number) {
+    const deletedInfo = await this.questionRepository.delete({ id: id });
+
+    if (deletedInfo.affected === 0) return false;
+
+    return true;
+  }
+  async getById(id: number) {
+    return this.questionRepository.findOneBy({ id: id });
+  }
+  async update(question: Question) {
     return this.questionRepository.save(question);
   }
   //   async getAll() {

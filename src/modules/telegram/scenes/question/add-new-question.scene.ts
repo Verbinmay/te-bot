@@ -6,8 +6,9 @@ import {
   ADD_THIRD_WRONG_ANSWER_CREATOR,
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
+  CHANGED_MY_MIND,
   SAVE_QUESTION_CREATOR,
-} from '../constants/buttons';
+} from '../../constants/buttons';
 import {
   ADD_CORRECT_ANSWER_CREATOR_SCENE,
   ADD_FIRST_WRONG_ANSWER_CREATOR_SCENE,
@@ -17,17 +18,18 @@ import {
   ADD_THIRD_WRONG_ANSWER_CREATOR_SCENE,
   EDIT_QUESTIONS_SCENE,
   START_MAIN_SCENE,
-} from '../constants/scenes';
+} from '../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { MS_DONE, MS_SORRY_ERROR } from '../constants/messages.const';
-import { CreatorQuestion } from '../entities/question-creator.entity';
-import { Question } from '../entities/question.entity';
-import { CreatorQuestionService } from '../services/question.creator.service';
-import { QuestionService } from '../services/question.service';
-import { getMessageText } from '../utils/get-message-text';
-import { getUserId } from '../utils/get-user-id';
+import { ContextSceneType } from '../../dto/types/context.type';
+import { MS_DONE, MS_SORRY_ERROR } from '../../constants/messages.const';
+import { CreatorQuestion } from '../../entities/question-creator.entity';
+import { Question } from '../../entities/question.entity';
+import { CreatorQuestionService } from '../../services/question.creator.service';
+import { QuestionService } from '../../services/question.service';
+import { getMessageText } from '../../utils/get-message-text';
+import { getUserId } from '../../utils/get-user-id';
+import { showObjectLikeString } from '../../utils/show-object-like-string';
 
 @Scene(ADD_QUESTION_SCENE)
 export class AddNewAQuestionScene {
@@ -57,6 +59,7 @@ export class AddNewAQuestionScene {
           resize_keyboard: true,
           keyboard: [
             [{ text: ADD_CORRECT_ANSWER_CREATOR }],
+            [{ text: CHANGED_MY_MIND }],
             [{ text: BACK_TO_PREVIOUS_MENU }],
           ],
         },
@@ -67,6 +70,7 @@ export class AddNewAQuestionScene {
           resize_keyboard: true,
           keyboard: [
             [{ text: ADD_FIRST_WRONG_ANSWER_CREATOR }],
+            [{ text: CHANGED_MY_MIND }],
             [{ text: BACK_TO_PREVIOUS_MENU }],
           ],
         },
@@ -77,6 +81,7 @@ export class AddNewAQuestionScene {
           resize_keyboard: true,
           keyboard: [
             [{ text: ADD_SECOND_WRONG_ANSWER_CREATOR }],
+            [{ text: CHANGED_MY_MIND }],
             [{ text: BACK_TO_PREVIOUS_MENU }],
           ],
         },
@@ -87,6 +92,7 @@ export class AddNewAQuestionScene {
           resize_keyboard: true,
           keyboard: [
             [{ text: ADD_THIRD_WRONG_ANSWER_CREATOR }],
+            [{ text: CHANGED_MY_MIND }],
             [{ text: BACK_TO_PREVIOUS_MENU }],
           ],
         },
@@ -102,6 +108,7 @@ export class AddNewAQuestionScene {
             [{ text: ADD_SECOND_WRONG_ANSWER_CREATOR }],
             [{ text: ADD_THIRD_WRONG_ANSWER_CREATOR }],
             [{ text: SAVE_QUESTION_CREATOR }],
+            [{ text: CHANGED_MY_MIND }],
             [{ text: BACK_TO_PREVIOUS_MENU }],
             [{ text: BACK_TO_MAIN_MENU }],
           ],
@@ -135,6 +142,10 @@ export class AddNewAQuestionScene {
         break;
       case ADD_THIRD_WRONG_ANSWER_CREATOR:
         await ctx.scene.enter(ADD_THIRD_WRONG_ANSWER_CREATOR_SCENE);
+        break;
+      case CHANGED_MY_MIND:
+        await this.creatorQuestionService.deleteByTelegramId(getUserId(ctx));
+        await ctx.scene.enter(START_MAIN_SCENE);
         break;
       case SAVE_QUESTION_CREATOR:
         {
