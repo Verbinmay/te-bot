@@ -28,6 +28,8 @@ export const SAVE_QUESTION_CREATOR = 'СОХРАНИТЬ';
 export const CHANGED_MY_MIND = 'Не готов 🏃🏻';
 export const BAN_USER = 'Забанить пользователя';
 export const UNBAN_USER = 'Разбанить пользователя';
+export const EXEL_QUESTION = 'EXEL';
+
 //------------//
 
 export const startTwentyQuestions = 'Погнали 💪🏻';

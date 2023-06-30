@@ -30,6 +30,6 @@ export class Question {
   @UpdateDateColumn({ nullable: true, type: 'timestamp' })
   public updatedAt: Date | null = null;
 
-  @Column({ type: 'boolean', default: false })
-  public isPublished = false;
+  @Column({ type: 'boolean', default: true })
+  public isPublished = true;
 }

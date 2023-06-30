@@ -38,6 +38,10 @@ export class QuestionService {
   async update(question: Question) {
     return this.questionRepository.save(question);
   }
+  async create(question: Question) {
+    this.questionRepository.create(question);
+    return this.questionRepository.save(question);
+  }
   //   async getAll() {
   //     return this.taskRepository.find();
   //   }

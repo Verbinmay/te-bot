@@ -27,3 +27,5 @@ export const MS_WRONG_TEXT_ANSWER = 'Неудачный текст ответа'
 export const MS_SEND_ID_AND_UPDATE_WRONG_ANSWER = `Отправь id вопроса и новый неправильный ответ в таком формате: \n id | Неправильный ответ`;
 export const MS_TYPE_AN_USER_USERNAME = 'Введите username пользователя';
 export const MS_SORRY_BAN = 'Прости, ты в бане';
+export const MS_EXEL_MESSAGE = 'Запиши вопросы по примеру и отправь';
+export const MS_EXEL_DONE = 'Молодчина! Я закончил загружать вопросы';

@@ -3,6 +3,7 @@ import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
   DELETE_QUESTION,
+  EXEL_QUESTION,
   UPDATE_QUESTION,
 } from '../constants/buttons';
 import {
@@ -13,6 +14,7 @@ import {
   ADD_QUESTION_SCENE,
   DELETE_QUESTION_SCENE,
   EDIT_QUESTIONS_SCENE,
+  EXEL_QUESTION_SCENE,
   START_ADMINISTRATION_SCENE,
   START_MAIN_SCENE,
   UPDATE_QUESTION_SCENE,
@@ -26,6 +28,7 @@ const keyboard = [
   [{ text: ADD_QUESTION }],
   [{ text: DELETE_QUESTION }],
   [{ text: UPDATE_QUESTION }],
+  [{ text: EXEL_QUESTION }],
   [{ text: BACK_TO_PREVIOUS_MENU }],
   [{ text: BACK_TO_MAIN_MENU }],
 ];
@@ -54,6 +57,9 @@ export class EditQuestionsScene {
         break;
       case UPDATE_QUESTION:
         await ctx.scene.enter(UPDATE_QUESTION_SCENE);
+        break;
+      case EXEL_QUESTION:
+        await ctx.scene.enter(EXEL_QUESTION_SCENE);
         break;
       case BACK_TO_PREVIOUS_MENU:
         await ctx.scene.enter(START_ADMINISTRATION_SCENE, ctx.scene.state);

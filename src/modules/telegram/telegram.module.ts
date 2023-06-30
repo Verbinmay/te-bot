@@ -18,6 +18,7 @@ import { AddNewAQuestionScene } from './scenes/question/add-new-question.scene';
 import { DeleteQuestionScene } from './scenes/question/delete-question.scene';
 import { UpdateQuestionScene } from './scenes/question/update-question.scene';
 import { BanUserScene } from './scenes/user/ban-user.scene';
+import { UnBanUserScene } from './scenes/user/unban-user.scene';
 import {} from './constants/scenes';
 import { Answer } from './entities/answer.entity';
 import { CreatorQuestion } from './entities/question-creator.entity';
@@ -36,6 +37,7 @@ import { CreatorQuestionService } from './services/question.creator.service';
 import { QuestionService } from './services/question.service';
 import { UserService } from './services/user.service';
 import { TelegramUpdate } from './telegram.update';
+import { ExelNewQuestionScene } from './scenes/question/exel-new-questions.scene';
 
 /**сцены */
 const scenes = [
@@ -61,6 +63,8 @@ const scenes = [
   Q_ChangeThirdAnswerScene,
   EditUsersScene,
   BanUserScene,
+  UnBanUserScene,
+  ExelNewQuestionScene,
 ];
 
 /** сервисы */

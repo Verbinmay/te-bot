@@ -16,7 +16,7 @@ import { UserService } from '../../services/user.service';
 import { getMessageText } from '../../utils/get-message-text';
 
 @Scene(UNBAN_USER_SCENE)
-export class BanUserScene {
+export class UnBanUserScene {
   constructor(private readonly userService: UserService) {}
 
   @SceneEnter()

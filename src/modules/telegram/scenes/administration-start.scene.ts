@@ -11,13 +11,13 @@ import {
   START_ADMINISTRATION_SCENE,
   START_MAIN_SCENE,
 } from '../constants/scenes';
-import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-
-import { ContextSceneType } from '../dto/types/context.type';
 import {
   MS_ADMIN_HELLO_MESSAGE,
   MS_CHOOSE_THE_SUGGESTED_ACTION,
 } from '../constants/messages.const';
+import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+
+import { ContextSceneType } from '../dto/types/context.type';
 
 @Scene(START_ADMINISTRATION_SCENE)
 export class AdministrationStartScene {
