@@ -2,14 +2,17 @@ import {
   ADD_NEW_ADMINISTRATOR_SCENE,
   EDIT_ADMINISTRATORS_SCENE,
   START_MAIN_SCENE,
-} from '../constants/scenes';
+} from '../../../constants/scenes';
+import {
+  BACK_TO_MAIN_MENU,
+  BACK_TO_PREVIOUS_MENU,
+} from '../../../constants/buttons';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { BACK_TO_MAIN_MENU, BACK_TO_PREVIOUS_MENU } from '../constants/buttons';
-import { MS_TYPE_AN_ADMIN_USERNAME } from '../constants/messages.const';
-import { UserService } from '../services/user.service';
-import { getMessageText } from '../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_TYPE_AN_ADMIN_USERNAME } from '../../../constants/messages.const';
+import { UserService } from '../../../services/user.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
 @Scene(ADD_NEW_ADMINISTRATOR_SCENE)
 export class AddNewAdministratorScene {
@@ -35,7 +38,7 @@ export class AddNewAdministratorScene {
       if (text === BACK_TO_PREVIOUS_MENU) {
         await ctx.scene.enter(EDIT_ADMINISTRATORS_SCENE);
       } else if (text === BACK_TO_MAIN_MENU) {
-        await ctx.scene.enter(START_MAIN_SCENE, ctx.scene.state);
+        await ctx.scene.enter(START_MAIN_SCENE);
       } else {
         const updatedUser: boolean = await this.userService.addAdmin(text);
         if (updatedUser) {

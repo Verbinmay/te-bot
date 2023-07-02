@@ -5,7 +5,8 @@ import {
 import { Ctx, Start, Update } from 'nestjs-telegraf';
 
 import { ContextSceneType } from './dto/types/context.type';
-import { MS_SORRY_BAN } from './constants/messages.const';
+import { MS_HELLO_MESSAGE, MS_SORRY_BAN } from './constants/messages.const';
+import { ST_CAT0$0 } from './constants/stickers';
 import { UserService } from './services/user.service';
 
 @Update()
@@ -22,8 +23,12 @@ export class TelegramUpdate {
         await ctx.reply(MS_SORRY_BAN);
         return;
       }
+      await ctx.sendSticker(ST_CAT0$0);
+      await ctx.reply(MS_HELLO_MESSAGE);
       await ctx.scene.enter(START_MAIN_SCENE);
     } else {
+      await ctx.sendSticker(ST_CAT0$0);
+      await ctx.reply(MS_HELLO_MESSAGE);
       await ctx.scene.enter(START_AUTHORIZATION_SCENE);
     }
   }

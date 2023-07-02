@@ -1,22 +1,22 @@
 import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
+  BAN_USER_SCENE,
   EDIT_USERS_SCENE,
   START_MAIN_SCENE,
-  UNBAN_USER_SCENE,
-} from '../../constants/scenes';
+} from '../../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { MS_TYPE_AN_USER_USERNAME } from '../../constants/messages.const';
-import { User } from '../../entities/user.entity';
-import { UserService } from '../../services/user.service';
-import { getMessageText } from '../../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_TYPE_AN_USER_USERNAME } from '../../../constants/messages.const';
+import { User } from '../../../entities/user.entity';
+import { UserService } from '../../../services/user.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
-@Scene(UNBAN_USER_SCENE)
-export class UnBanUserScene {
+@Scene(BAN_USER_SCENE)
+export class BanUserScene {
   constructor(private readonly userService: UserService) {}
 
   @SceneEnter()
@@ -42,11 +42,11 @@ export class UnBanUserScene {
         await ctx.scene.enter(START_MAIN_SCENE);
       } else {
         const user: User | null = await this.userService.getByUserName(text);
-        user.isBaned = false;
+        user.isBaned = true;
         const bannedUser = await this.userService.update(user);
 
-        if (bannedUser.isBaned === false) {
-          await ctx.reply(`Пользователь с ником: ${text} успешно разабанен`, {
+        if (bannedUser.isBaned === true) {
+          await ctx.reply(`Пользователь с ником: ${text} успешно забанен`, {
             reply_markup: {
               resize_keyboard: true,
               keyboard: [

@@ -39,3 +39,6 @@ export const CHANGE_THIRD_ANSWER_ADMIN_SCENE =
 //
 export const BAN_USER_SCENE = 'BAN_USER_SCENE';
 export const UNBAN_USER_SCENE = 'UNBAN_USER_SCENE';
+//
+
+export const CALL_ADMIN_SCENE = 'CALL_ADMIN_SCENE';

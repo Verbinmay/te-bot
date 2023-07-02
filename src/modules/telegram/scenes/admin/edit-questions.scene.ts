@@ -5,11 +5,11 @@ import {
   DELETE_QUESTION,
   EXEL_QUESTION,
   UPDATE_QUESTION,
-} from '../constants/buttons';
+} from '../../constants/buttons';
 import {
   MS_CHOOSE_THE_SUGGESTED_ACTION,
   MS_SELECT_AN_ACTION,
-} from '../constants/messages.const';
+} from '../../constants/messages.const';
 import {
   ADD_QUESTION_SCENE,
   DELETE_QUESTION_SCENE,
@@ -18,11 +18,11 @@ import {
   START_ADMINISTRATION_SCENE,
   START_MAIN_SCENE,
   UPDATE_QUESTION_SCENE,
-} from '../constants/scenes';
+} from '../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { getMessageText } from '../utils/get-message-text';
+import { ContextSceneType } from '../../dto/types/context.type';
+import { getMessageText } from '../../utils/get-message-text';
 
 const keyboard = [
   [{ text: ADD_QUESTION }],

@@ -8,7 +8,7 @@ import {
   BACK_TO_PREVIOUS_MENU,
   CHANGED_MY_MIND,
   SAVE_QUESTION_CREATOR,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
   ADD_CORRECT_ANSWER_CREATOR_SCENE,
   ADD_FIRST_WRONG_ANSWER_CREATOR_SCENE,
@@ -18,18 +18,18 @@ import {
   ADD_THIRD_WRONG_ANSWER_CREATOR_SCENE,
   EDIT_QUESTIONS_SCENE,
   START_MAIN_SCENE,
-} from '../../constants/scenes';
+} from '../../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { MS_DONE, MS_SORRY_ERROR } from '../../constants/messages.const';
-import { CreatorQuestion } from '../../entities/question-creator.entity';
-import { Question } from '../../entities/question.entity';
-import { CreatorQuestionService } from '../../services/question.creator.service';
-import { QuestionService } from '../../services/question.service';
-import { getMessageText } from '../../utils/get-message-text';
-import { getUserId } from '../../utils/get-user-id';
-import { showObjectLikeString } from '../../utils/show-object-like-string';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_DONE, MS_SORRY_ERROR } from '../../../constants/messages.const';
+import { CreatorQuestion } from '../../../entities/question-creator.entity';
+import { Question } from '../../../entities/question.entity';
+import { CreatorQuestionService } from '../../../services/question.creator.service';
+import { QuestionService } from '../../../services/question.service';
+import { getMessageText } from '../../../utils/get-message-text';
+import { getUserId } from '../../../utils/get-user-id';
+import { showObjectLikeString } from '../../../utils/show-object-like-string';
 
 @Scene(ADD_QUESTION_SCENE)
 export class AddNewAQuestionScene {

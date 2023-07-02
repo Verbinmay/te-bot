@@ -3,22 +3,22 @@ import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
   REMOVE_ADMINISTRATOR,
-} from '../constants/buttons';
+} from '../../constants/buttons';
 import {
   ADD_NEW_ADMINISTRATOR_SCENE,
   DELETE_ADMINISTRATOR_SCENE,
   EDIT_ADMINISTRATORS_SCENE,
   START_ADMINISTRATION_SCENE,
   START_MAIN_SCENE,
-} from '../constants/scenes';
+} from '../../constants/scenes';
 import {
   MS_CHOOSE_THE_SUGGESTED_ACTION,
   MS_SELECT_AN_ACTION,
-} from '../constants/messages.const';
+} from '../../constants/messages.const';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { getMessageText } from '../utils/get-message-text';
+import { ContextSceneType } from '../../dto/types/context.type';
+import { getMessageText } from '../../utils/get-message-text';
 
 @Scene(EDIT_ADMINISTRATORS_SCENE)
 export class EditAdministratorsScene {

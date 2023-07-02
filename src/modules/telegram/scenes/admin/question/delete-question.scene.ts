@@ -1,27 +1,25 @@
 import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
-  BAN_USER_SCENE,
-  EDIT_USERS_SCENE,
+  DELETE_QUESTION_SCENE,
+  EDIT_QUESTIONS_SCENE,
   START_MAIN_SCENE,
-} from '../../constants/scenes';
+} from '../../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { MS_TYPE_AN_USER_USERNAME } from '../../constants/messages.const';
-import { User } from '../../entities/user.entity';
-import { UserService } from '../../services/user.service';
-import { getMessageText } from '../../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_SEND_ID_QUESTION } from '../../../constants/messages.const';
+import { QuestionService } from '../../../services/question.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
-@Scene(BAN_USER_SCENE)
-export class BanUserScene {
-  constructor(private readonly userService: UserService) {}
-
+@Scene(DELETE_QUESTION_SCENE)
+export class DeleteQuestionScene {
+  constructor(private questionService: QuestionService) {}
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
-    await ctx.reply(MS_TYPE_AN_USER_USERNAME, {
+    await ctx.reply(MS_SEND_ID_QUESTION, {
       reply_markup: {
         resize_keyboard: true,
         keyboard: [
@@ -37,16 +35,15 @@ export class BanUserScene {
     const text = getMessageText(ctx);
     if (text.trim()) {
       if (text === BACK_TO_PREVIOUS_MENU) {
-        await ctx.scene.enter(EDIT_USERS_SCENE);
+        await ctx.scene.enter(EDIT_QUESTIONS_SCENE);
       } else if (text === BACK_TO_MAIN_MENU) {
         await ctx.scene.enter(START_MAIN_SCENE);
-      } else {
-        const user: User | null = await this.userService.getByUserName(text);
-        user.isBaned = true;
-        const bannedUser = await this.userService.update(user);
-
-        if (bannedUser.isBaned === true) {
-          await ctx.reply(`Пользователь с ником: ${text} успешно забанен`, {
+      } else if (!isNaN(Number(text.trim()))) {
+        const deletedQuestion: boolean = await this.questionService.deleteById(
+          Number(text),
+        );
+        if (deletedQuestion) {
+          await ctx.reply(`Вопрос с id: ${text} успешно удален`, {
             reply_markup: {
               resize_keyboard: true,
               keyboard: [
@@ -56,7 +53,7 @@ export class BanUserScene {
             },
           });
         } else {
-          await ctx.reply(`Пользователь с ником ${text} не найден`, {
+          await ctx.reply(`Вопрос с id ${text} не найден`, {
             reply_markup: {
               resize_keyboard: true,
               keyboard: [
@@ -66,10 +63,11 @@ export class BanUserScene {
             },
           });
         }
-        await ctx.reply(MS_TYPE_AN_USER_USERNAME);
+      } else {
+        await ctx.reply(MS_SEND_ID_QUESTION);
       }
     } else {
-      await ctx.reply(MS_TYPE_AN_USER_USERNAME);
+      await ctx.reply(MS_SEND_ID_QUESTION);
     }
   }
 }

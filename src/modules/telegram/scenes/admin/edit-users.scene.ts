@@ -3,22 +3,22 @@ import {
   BACK_TO_PREVIOUS_MENU,
   BAN_USER,
   UNBAN_USER,
-} from '../constants/buttons';
+} from '../../constants/buttons';
 import {
   BAN_USER_SCENE,
   EDIT_USERS_SCENE,
   START_ADMINISTRATION_SCENE,
   START_MAIN_SCENE,
   UNBAN_USER_SCENE,
-} from '../constants/scenes';
+} from '../../constants/scenes';
 import {
   MS_CHOOSE_THE_SUGGESTED_ACTION,
   MS_SELECT_AN_ACTION,
-} from '../constants/messages.const';
+} from '../../constants/messages.const';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { getMessageText } from '../utils/get-message-text';
+import { ContextSceneType } from '../../dto/types/context.type';
+import { getMessageText } from '../../utils/get-message-text';
 
 const keyboard = [
   [{ text: BAN_USER }],

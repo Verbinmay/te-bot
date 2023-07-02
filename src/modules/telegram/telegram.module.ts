@@ -4,40 +4,42 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 
-import { Q_ChangeFirstAnswerScene } from './scenes/question/update/change-1-answer.scene';
-import { Q_ChangeSecondAnswerScene } from './scenes/question/update/change-2-answer.scene';
-import { Q_ChangeThirdAnswerScene } from './scenes/question/update/change-3-answer.scene';
-import { Q_ChangeCorrectAnswerScene } from './scenes/question/update/change-correct-answer.scene';
-import { Q_ChangeQuestionScene } from './scenes/question/update/change-question.scene';
-import { AddFirstWrongAnswerCreatorScene } from './scenes/creator/creator-1-wrong-answer.scene';
-import { AddSecondWrongAnswerCreatorScene } from './scenes/creator/creator-2-wrong-answer.scene';
-import { AddThirdWrongAnswerCreatorScene } from './scenes/creator/creator-3-wrong-answer.scene';
-import { AddCorrectAnswerCreatorScene } from './scenes/creator/creator-correct-answer.scene';
-import { CreatorQuestionsScene } from './scenes/creator/creator-questions.scene';
-import { AddNewAQuestionScene } from './scenes/question/add-new-question.scene';
-import { DeleteQuestionScene } from './scenes/question/delete-question.scene';
-import { UpdateQuestionScene } from './scenes/question/update-question.scene';
-import { BanUserScene } from './scenes/user/ban-user.scene';
-import { UnBanUserScene } from './scenes/user/unban-user.scene';
+import { AddFirstWrongAnswerCreatorScene } from './scenes/admin/question/creator/creator-1-wrong-answer.scene';
+import { AddSecondWrongAnswerCreatorScene } from './scenes/admin/question/creator/creator-2-wrong-answer.scene';
+import { AddThirdWrongAnswerCreatorScene } from './scenes/admin/question/creator/creator-3-wrong-answer.scene';
+import { AddCorrectAnswerCreatorScene } from './scenes/admin/question/creator/creator-correct-answer.scene';
+import { CreatorQuestionsScene } from './scenes/admin/question/creator/creator-questions.scene';
+import { Q_ChangeFirstAnswerScene } from './scenes/admin/question/update/change-1-answer.scene';
+import { Q_ChangeSecondAnswerScene } from './scenes/admin/question/update/change-2-answer.scene';
+import { Q_ChangeThirdAnswerScene } from './scenes/admin/question/update/change-3-answer.scene';
+import { Q_ChangeCorrectAnswerScene } from './scenes/admin/question/update/change-correct-answer.scene';
+import { Q_ChangeQuestionScene } from './scenes/admin/question/update/change-question.scene';
+import { AddNewAdministratorScene } from './scenes/admin/administrator/add-new-administrator.scene';
+import { RemoveAdministratorScene } from './scenes/admin/administrator/remove-administrator.scene';
+import { AddNewAQuestionScene } from './scenes/admin/question/add-new-question.scene';
+import { DeleteQuestionScene } from './scenes/admin/question/delete-question.scene';
+import { ExelNewQuestionScene } from './scenes/admin/question/exel-new-questions.scene';
+import { UpdateQuestionScene } from './scenes/admin/question/update-question.scene';
+import { BanUserScene } from './scenes/admin/user/ban-user.scene';
+import { UnBanUserScene } from './scenes/admin/user/unban-user.scene';
+import { EditAdministratorsScene } from './scenes/admin/edit-administrators.scene';
+import { EditQuestionsScene } from './scenes/admin/edit-questions.scene';
+import { EditUsersScene } from './scenes/admin/edit-users.scene';
+import { CallAdministratorScene } from './scenes/helpers/call-administrator.scene';
 import {} from './constants/scenes';
 import { Answer } from './entities/answer.entity';
 import { CreatorQuestion } from './entities/question-creator.entity';
 import { Question } from './entities/question.entity';
 import { User } from './entities/user.entity';
-import { AddNewAdministratorScene } from './scenes/add-new-administrator.scene';
 import { AdministrationStartScene } from './scenes/administration-start.scene';
 import { AuthorizationScene } from './scenes/authorization.scene';
-import { EditAdministratorsScene } from './scenes/edit-administrators.scene';
-import { EditQuestionsScene } from './scenes/edit-questions.scene';
-import { EditUsersScene } from './scenes/edit-users.scene';
+import { HelpersStartScene } from './scenes/helpers-start.scene';
 import { MainScene } from './scenes/main.scene';
-import { RemoveAdministratorScene } from './scenes/remove-administrator.scene';
 import { AnswerService } from './services/answer.service';
 import { CreatorQuestionService } from './services/question.creator.service';
 import { QuestionService } from './services/question.service';
 import { UserService } from './services/user.service';
 import { TelegramUpdate } from './telegram.update';
-import { ExelNewQuestionScene } from './scenes/question/exel-new-questions.scene';
 
 /**сцены */
 const scenes = [
@@ -65,6 +67,8 @@ const scenes = [
   BanUserScene,
   UnBanUserScene,
   ExelNewQuestionScene,
+  HelpersStartScene,
+  CallAdministratorScene,
 ];
 
 /** сервисы */

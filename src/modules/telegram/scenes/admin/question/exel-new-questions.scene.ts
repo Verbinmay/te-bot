@@ -1,18 +1,17 @@
 import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
-  ADD_QUESTION_SCENE,
   EDIT_QUESTIONS_SCENE,
   EXEL_QUESTION_SCENE,
   START_MAIN_SCENE,
-} from '../../constants/scenes';
+} from '../../../constants/scenes';
 import {
   MS_EXEL_DONE,
   MS_EXEL_MESSAGE,
   MS_SORRY_ERROR,
-} from '../../constants/messages.const';
+} from '../../../constants/messages.const';
 import axios from 'axios';
 import * as fs from 'fs';
 import { promises as fsPromises } from 'fs';
@@ -20,10 +19,10 @@ import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import * as path from 'path';
 import * as xlsx from 'xlsx';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { Question } from '../../entities/question.entity';
-import { QuestionService } from '../../services/question.service';
-import { getMessageText } from '../../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { Question } from '../../../entities/question.entity';
+import { QuestionService } from '../../../services/question.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
 @Scene(EXEL_QUESTION_SCENE)
 export class ExelNewQuestionScene {

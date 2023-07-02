@@ -7,7 +7,7 @@ import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
   UPDATE_QUESTION,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
   CHANGE_CORRECT_ANSWER_ADMIN_SCENE,
   CHANGE_FIRST_ANSWER_ADMIN_SCENE,
@@ -17,13 +17,13 @@ import {
   EDIT_QUESTIONS_SCENE,
   START_MAIN_SCENE,
   UPDATE_QUESTION_SCENE,
-} from '../../constants/scenes';
+} from '../../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { MS_SELECT_AN_ACTION } from '../../constants/messages.const';
-import { QuestionService } from '../../services/question.service';
-import { getMessageText } from '../../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_SELECT_AN_ACTION } from '../../../constants/messages.const';
+import { QuestionService } from '../../../services/question.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
 @Scene(UPDATE_QUESTION_SCENE)
 export class UpdateQuestionScene {

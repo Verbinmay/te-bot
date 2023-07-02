@@ -2,18 +2,21 @@ import {
   DELETE_ADMINISTRATOR_SCENE,
   EDIT_ADMINISTRATORS_SCENE,
   START_MAIN_SCENE,
-} from '../constants/scenes';
+} from '../../../constants/scenes';
 import { log } from 'console';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../dto/types/context.type';
-import { SA_ViewAdminDto } from '../dto/user/sa-view-admin.dto';
-import { BACK_TO_MAIN_MENU, BACK_TO_PREVIOUS_MENU } from '../constants/buttons';
-import { MS_TYPE_AN_ADMIN_ID } from '../constants/messages.const';
-import { User } from '../entities/user.entity';
-import { UserService } from '../services/user.service';
-import { getMessageText } from '../utils/get-message-text';
-import { showArrayOfObjects } from '../utils/show-users-or-admins';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { SA_ViewAdminDto } from '../../../dto/user/sa-view-admin.dto';
+import {
+  BACK_TO_MAIN_MENU,
+  BACK_TO_PREVIOUS_MENU,
+} from '../../../constants/buttons';
+import { MS_TYPE_AN_ADMIN_ID } from '../../../constants/messages.const';
+import { User } from '../../../entities/user.entity';
+import { UserService } from '../../../services/user.service';
+import { getMessageText } from '../../../utils/get-message-text';
+import { showArrayOfObjects } from '../../../utils/show-users-or-admins';
 
 @Scene(DELETE_ADMINISTRATOR_SCENE)
 export class RemoveAdministratorScene {

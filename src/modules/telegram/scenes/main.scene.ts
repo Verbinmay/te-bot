@@ -58,8 +58,6 @@ export class MainScene {
       return;
     }
     if (user.role === 'user') {
-      await ctx.sendSticker(ST_CAT0$0);
-      await ctx.reply(MS_HELLO_MESSAGE);
       await ctx.reply(MS_MAIN_ACTION, {
         reply_markup: {
           resize_keyboard: true,
@@ -93,7 +91,7 @@ export class MainScene {
         await ctx.scene.enter(GET_MY_WRONG_ANSWERS_SCENE);
         break;
       case HELPER:
-        await ctx.scene.enter(SEND_HELP_SCENE);
+        await ctx.scene.enter(SEND_HELP_SCENE, { ...ctx.scene.state });
         break;
       case RELOAD:
         await ctx.scene.reenter();

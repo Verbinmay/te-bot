@@ -1,25 +1,27 @@
 import {
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-} from '../../constants/buttons';
+} from '../../../constants/buttons';
 import {
-  DELETE_QUESTION_SCENE,
-  EDIT_QUESTIONS_SCENE,
+  EDIT_USERS_SCENE,
   START_MAIN_SCENE,
-} from '../../constants/scenes';
+  UNBAN_USER_SCENE,
+} from '../../../constants/scenes';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ContextSceneType } from '../../dto/types/context.type';
-import { MS_SEND_ID_QUESTION } from '../../constants/messages.const';
-import { QuestionService } from '../../services/question.service';
-import { getMessageText } from '../../utils/get-message-text';
+import { ContextSceneType } from '../../../dto/types/context.type';
+import { MS_TYPE_AN_USER_USERNAME } from '../../../constants/messages.const';
+import { User } from '../../../entities/user.entity';
+import { UserService } from '../../../services/user.service';
+import { getMessageText } from '../../../utils/get-message-text';
 
-@Scene(DELETE_QUESTION_SCENE)
-export class DeleteQuestionScene {
-  constructor(private questionService: QuestionService) {}
+@Scene(UNBAN_USER_SCENE)
+export class UnBanUserScene {
+  constructor(private readonly userService: UserService) {}
+
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
-    await ctx.reply(MS_SEND_ID_QUESTION, {
+    await ctx.reply(MS_TYPE_AN_USER_USERNAME, {
       reply_markup: {
         resize_keyboard: true,
         keyboard: [
@@ -35,15 +37,16 @@ export class DeleteQuestionScene {
     const text = getMessageText(ctx);
     if (text.trim()) {
       if (text === BACK_TO_PREVIOUS_MENU) {
-        await ctx.scene.enter(EDIT_QUESTIONS_SCENE);
+        await ctx.scene.enter(EDIT_USERS_SCENE);
       } else if (text === BACK_TO_MAIN_MENU) {
         await ctx.scene.enter(START_MAIN_SCENE);
-      } else if (!isNaN(Number(text.trim()))) {
-        const deletedQuestion: boolean = await this.questionService.deleteById(
-          Number(text),
-        );
-        if (deletedQuestion) {
-          await ctx.reply(`Вопрос с id: ${text} успешно удален`, {
+      } else {
+        const user: User | null = await this.userService.getByUserName(text);
+        user.isBaned = false;
+        const bannedUser = await this.userService.update(user);
+
+        if (bannedUser.isBaned === false) {
+          await ctx.reply(`Пользователь с ником: ${text} успешно разабанен`, {
             reply_markup: {
               resize_keyboard: true,
               keyboard: [
@@ -53,7 +56,7 @@ export class DeleteQuestionScene {
             },
           });
         } else {
-          await ctx.reply(`Вопрос с id ${text} не найден`, {
+          await ctx.reply(`Пользователь с ником ${text} не найден`, {
             reply_markup: {
               resize_keyboard: true,
               keyboard: [
@@ -63,11 +66,10 @@ export class DeleteQuestionScene {
             },
           });
         }
-      } else {
-        await ctx.reply(MS_SEND_ID_QUESTION);
+        await ctx.reply(MS_TYPE_AN_USER_USERNAME);
       }
     } else {
-      await ctx.reply(MS_SEND_ID_QUESTION);
+      await ctx.reply(MS_TYPE_AN_USER_USERNAME);
     }
   }
 }
