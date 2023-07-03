@@ -26,6 +26,7 @@ import { EditAdministratorsScene } from './scenes/admin/edit-administrators.scen
 import { EditQuestionsScene } from './scenes/admin/edit-questions.scene';
 import { EditUsersScene } from './scenes/admin/edit-users.scene';
 import { CallAdministratorScene } from './scenes/helpers/call-administrator.scene';
+import { QuickQuestionsScene } from './scenes/quiz/question-quiz.scene';
 import {} from './constants/scenes';
 import { Answer } from './entities/answer.entity';
 import { CreatorQuestion } from './entities/question-creator.entity';
@@ -35,6 +36,8 @@ import { AdministrationStartScene } from './scenes/administration-start.scene';
 import { AuthorizationScene } from './scenes/authorization.scene';
 import { HelpersStartScene } from './scenes/helpers-start.scene';
 import { MainScene } from './scenes/main.scene';
+import { QuizStartScene } from './scenes/quick-questions-start.scene';
+import { WrongAnswersStartScene } from './scenes/wrong-answers-start.scene';
 import { AnswerService } from './services/answer.service';
 import { CreatorQuestionService } from './services/question.creator.service';
 import { QuestionService } from './services/question.service';
@@ -69,6 +72,9 @@ const scenes = [
   ExelNewQuestionScene,
   HelpersStartScene,
   CallAdministratorScene,
+  WrongAnswersStartScene,
+  QuizStartScene,
+  QuickQuestionsScene,
 ];
 
 /** сервисы */

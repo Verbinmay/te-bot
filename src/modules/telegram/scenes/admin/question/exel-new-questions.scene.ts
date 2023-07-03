@@ -64,7 +64,7 @@ export class ExelNewQuestionScene {
       const fileName = 'exel.xlsx';
       const currentFilePath = __filename;
       const currentDir = path.dirname(currentFilePath);
-      const filePath = path.join(currentDir, '..', 'data', fileName);
+      const filePath = path.join(currentDir, '..', 'data');
       await fsPromises.writeFile(filePath, fileBuffer);
 
       // Читаем файл с помощью xlsx.read()

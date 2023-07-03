@@ -34,3 +34,6 @@ export const MS_SEND_YOUR_PROBLEM =
   'Что вас беспокои?Опишите проблему одним сообщением';
 export const MS_THANKS_TO_SENDED_PROBLEM =
   'Спасибо! Наш администратор разберется или свяжется с вами для уточнения деталей';
+export const MS_YOU_WRONG_ANSWERS =
+  'Вот список вопросов, на которые ты ответил неправильно';
+export const MS_NO_WRONG_ANSWERS = 'Ой! У тебя нет неправильных ответов';

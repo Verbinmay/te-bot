@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Answer } from '../entities/answer.entity';
 import { CreatorQuestion } from '../entities/question-creator.entity';
 import { Question } from '../entities/question.entity';
 
@@ -42,21 +43,21 @@ export class QuestionService {
     this.questionRepository.create(question);
     return this.questionRepository.save(question);
   }
+  async getCount() {
+    return this.questionRepository.count();
+  }
+  async getAllWithPagination(num: number) {
+    return this.questionRepository.find({
+      where: {
+        isPublished: true,
+      },
+      order: { createdAt: 'ASC' },
+      skip: num * 20,
+      take: 20,
+    });
+  }
   //   async getAll() {
   //     return this.taskRepository.find();
-  //   }
-  //   async getAllWithPagination(num: number) {
-  //     return this.taskRepository.find({
-  //       where: {
-  //         isPublished: true,
-  //       },
-  //       order: { createdAt: 'ASC' },
-  //       skip: (num - 1) * 20,
-  //       take: 20,
-  //     });
-  //   }
-  //   async getCount() {
-  //     return this.taskRepository.count();
   //   }
 
   //   async getById(id: number) {

@@ -1,9 +1,8 @@
 import { SA_ViewAdminDto } from '../dto/user/sa-view-admin.dto';
 
-export const showArrayOfObjectsByUser = (objects: Array<SA_ViewAdminDto>) => {
+export const showArrayOfObjectsLikeString = (objects: Array<any>) => {
   let result = '';
   objects.forEach((obj, index) => {
-    result += `${obj.role} ${index + 1}:\n`;
     Object.entries(obj).forEach(([key, value]) => {
       result += `  ${key}: ${value}\n`;
     });

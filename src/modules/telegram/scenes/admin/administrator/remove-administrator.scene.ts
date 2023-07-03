@@ -16,7 +16,7 @@ import { MS_TYPE_AN_ADMIN_ID } from '../../../constants/messages.const';
 import { User } from '../../../entities/user.entity';
 import { UserService } from '../../../services/user.service';
 import { getMessageText } from '../../../utils/get-message-text';
-import { showArrayOfObjects } from '../../../utils/show-users-or-admins';
+import { showArrayOfObjectsByUser } from '../../../utils/show-users-or-admins';
 
 @Scene(DELETE_ADMINISTRATOR_SCENE)
 export class RemoveAdministratorScene {
@@ -38,7 +38,7 @@ export class RemoveAdministratorScene {
         };
       });
 
-    const administrators: string = showArrayOfObjects(administratorsViewModel);
+    const administrators: string = showArrayOfObjectsByUser(administratorsViewModel);
     await ctx.reply(administrators);
 
     await ctx.reply(MS_TYPE_AN_ADMIN_ID, {

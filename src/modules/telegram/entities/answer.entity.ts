@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { answerStatus } from 'src/modules/telegram/dto/answer/create-answer-dto';
 
+import { Question } from './question.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -22,20 +23,19 @@ export class Answer {
   })
   public user: User;
 
-  @Column()
-  public questionId: number;
+  @ManyToOne(() => Question, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  public question: Question;
 
   @Column({ type: 'enum', enum: ['Correct', 'Incorrect'] })
   public answerStatus: answerStatus;
 
   @Column('text', { nullable: true, default: null })
-  public correctAnswer: string;
-  @Column('text', { nullable: true, default: null })
-  public wrongAnswer: string;
+  public body: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  public createdAt!: Date;
-
-  @UpdateDateColumn({ nullable: true, type: 'timestamp' })
-  public updatedAt: Date | null = null;
+  @Column()
+  public createdAt: string = new Date().toISOString();
 }

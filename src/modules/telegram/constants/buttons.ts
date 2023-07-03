@@ -30,7 +30,7 @@ export const BAN_USER = 'Забанить пользователя';
 export const UNBAN_USER = 'Разбанить пользователя';
 export const EXEL_QUESTION = 'EXEL';
 export const CALL_ADMIN = 'Связаться с администратором';
-
+export const LETS_START_FIESTA = 'Погнали 💪🏻';
 //------------//
 
 export const startTwentyQuestions = 'Погнали 💪🏻';

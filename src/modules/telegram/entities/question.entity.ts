@@ -2,14 +2,19 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Answer } from './answer.entity';
 
 @Entity()
 export class Question {
   @PrimaryGeneratedColumn('increment')
   public id!: number;
+
+  @OneToMany(() => Answer, (answer) => answer.question)
+  public answers: Array<Answer>;
 
   @Column('text')
   public body: string;
