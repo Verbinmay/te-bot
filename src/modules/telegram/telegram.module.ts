@@ -1,5 +1,3 @@
-import { entities } from 'src/app.module';
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
@@ -50,48 +48,48 @@ import { TelegramUpdate } from './telegram.update';
 
 /**сцены */
 const scenes = [
+  AddCorrectAnswerCreatorScene,
   AddFirstWrongAnswerCreatorScene,
+  AddNewAQuestionScene,
+  AddNewAdministratorScene,
   AddSecondWrongAnswerCreatorScene,
   AddThirdWrongAnswerCreatorScene,
-  AddCorrectAnswerCreatorScene,
-  CreatorQuestionsScene,
-  AddNewAdministratorScene,
-  AddNewAQuestionScene,
   AdministrationStartScene,
   AuthorizationScene,
+  BanUserScene,
+  CallAdministratorScene,
+  CreatorQuestionsScene,
+  DeleteQuestionScene,
   EditAdministratorsScene,
   EditQuestionsScene,
+  EditUsersScene,
+  ExelNewQuestionScene,
+  GetInfoStartScene,
+  HelpersStartScene,
+  InterviewQuestionsScene,
+  InterviewStartScene,
   MainScene,
-  RemoveAdministratorScene,
-  DeleteQuestionScene,
-  UpdateQuestionScene,
-  Q_ChangeQuestionScene,
   Q_ChangeCorrectAnswerScene,
   Q_ChangeFirstAnswerScene,
+  Q_ChangeQuestionScene,
   Q_ChangeSecondAnswerScene,
   Q_ChangeThirdAnswerScene,
-  EditUsersScene,
-  BanUserScene,
-  UnBanUserScene,
-  ExelNewQuestionScene,
-  HelpersStartScene,
-  CallAdministratorScene,
-  WrongAnswersStartScene,
-  QuizStartScene,
   QuickQuestionsScene,
-  InterviewStartScene,
-  InterviewQuestionsScene,
-  GetInfoStartScene,
+  QuizStartScene,
+  RemoveAdministratorScene,
+  UnBanUserScene,
+  UpdateQuestionScene,
+  WrongAnswersStartScene,
 ];
 
 /** сервисы */
 const services = [
-  TelegramUpdate,
   AnswerService,
   CreatorQuestionService,
-  QuestionService,
-  UserService,
   ErrorService,
+  QuestionService,
+  TelegramUpdate,
+  UserService,
 ];
 
 @Module({

@@ -3,7 +3,6 @@ import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
-import { Answer } from '../entities/answer.entity';
 import { CreatorQuestion } from '../entities/question-creator.entity';
 import { Question } from '../entities/question.entity';
 

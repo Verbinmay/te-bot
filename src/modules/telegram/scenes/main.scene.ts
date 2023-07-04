@@ -19,17 +19,14 @@ import {
 import {
   MS_MAIN_ACTION,
   MS_NOT_ADMIN,
-  MS_NO_ADMINS,
   MS_SORRY_BAN,
   MS_SORRY_ERROR,
 } from '../constants/messages.const';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { Telegram, TelegramError } from 'telegraf';
 
 import { ContextSceneType } from '../dto/types/context.type';
 import { ST_CAPITAN } from '../constants/stickers';
 import { User } from '../entities/user.entity';
-import { ErrorService } from '../services/error.service';
 import { UserService } from '../services/user.service';
 import { getMessageText } from '../utils/get-message-text';
 import { getUserId } from '../utils/get-user-id';

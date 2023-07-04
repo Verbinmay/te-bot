@@ -74,7 +74,7 @@ export class ExelNewQuestionScene {
         const fileBuffer = response.data;
 
         // Сохраняем файл на диске
-        const fileName = 'exel.xlsx';
+
         const currentFilePath = __filename;
         const currentDir = path.dirname(currentFilePath);
         const filePath = path.join(currentDir, '..', 'data');

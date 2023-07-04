@@ -1,13 +1,12 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=2000px height=200px src="https://i.imgur.com/46Gwmet.gif" alt="Bot logo"></a>
+ <img width=200px height=200px src="https://i.imgur.com/FxL5qM0.jpg" alt="Bot logo"></a>
 </p>
 
 <h3 align="center">todo-bot</h3>
 
 <div align="center">
 
-</div>
 
 ---
 
@@ -19,31 +18,40 @@
 
 - [About](#about)
 - [Demo / Working](#demo)
-- [How it works](#working)
+- [Usage](#usage)
 
 
 ## 🧐 About <a name = "about"></a>
 
-The purpose of this Telegram bot is to facilitate task management and organization for users. By leveraging the bot's functionality, users can easily create, view, edit, and delete tasks directly within the Telegram messaging platform. The bot provides a user-friendly interface through commands, buttons, and text interactions, allowing users to interact with their task list seamlessly. Whether it's keeping track of personal to-do lists, managing work-related tasks, or organizing projects, this bot serves as a convenient and efficient tool for users to stay organized and prioritize their tasks. With its intuitive features and integration with Telegram, the bot offers a streamlined task management experience for users, enhancing their productivity and enabling them to stay on top of their responsibilities.
+The purpose of the bot is to provide an interactive and engaging experience for users on the Telegram platform. The bot offers various functionalities and scenes, allowing users to participate in quizzes, interviews, and access information about themselves. It also includes an administration section for users with admin privileges to manage different aspects of the bot. The bot aims to entertain and educate users by presenting them with questions, providing answers, and allowing them to explore different scenes based on their interests. With a user-friendly interface and customized keyboards, the bot offers an intuitive and seamless user experience, catering to both regular users and administrators.
 
 ## 🎥 Demo / Working <a name = "demo"></a>
 
-![Working](https://media.giphy.com/media/20NLMBm0BkUOwNljwv/giphy.gif)
+![Working](https://media.giphy.com/media/12XTNObsY1pWQU/giphy.gif)
 
 ## 💭 How it works <a name = "working"></a>
+The bot works as follows:
 
-This code represents a description of a Telegram bot that provides task management functionality. The bot is built using the NestJS framework and the telegraf library.
+Initialization: The bot is initialized and starts listening for incoming messages from users.
 
-The main logic of the bot is implemented in the `AppUpdate` class, which serves as the handler for bot updates. The `bot` and `appService` instances are injected into the constructor of this class, provided by the telegraf library and the application service, respectively.
+Main Scene: When a user starts a chat with the bot or sends a specific command, they are directed to the "Main Scene" represented by the constant START_MAIN_SCENE. In this scene, the bot checks if the user is authorized and retrieves their information from the database using the userService.getByTelegramId() method. Based on the user's role and ban status, the bot constructs a custom keyboard with different buttons, allowing the user to access various functionalities.
 
-The bot responds to various events and commands using the `@Start()`, `@Hears()`, and `@On()` decorators. For example, when receiving the "/start" command, the bot sends a welcome message and prompts the user to choose an action using buttons.
+User Interaction: The user interacts with the bot by selecting one of the buttons displayed on the custom keyboard. Each button corresponds to a specific action or scene in the bot.
 
-The main actions available in the bot include viewing the task list, marking a task as done, creating a new task, deleting a task, and editing a task name. Each action is associated with a corresponding handler that performs the required operations using the `appService` application service.
+Scene Navigation: When a button is pressed, the bot checks the text of the message to determine which action the user intends to perform. For example, if the user selects TWENTY_QUESTION, they will be directed to the "Start Quiz Scene" represented by the constant START_QUIZ_SCENE. Similarly, selecting FORTY_QUESTION will take them to the "Start Interview Scene" represented by START_INTERVIEW_SCENE.
 
-For handling text messages unrelated to commands or buttons, the `@On('text')` handler is used. Inside this handler, the current user action type is checked, and the message is processed accordingly. For example, if the user is performing the "done" action, the bot accepts the task ID, marks it as done, and displays the updated task list.
+Scene Handling: In each scene, the bot performs specific actions and interacts with the user accordingly. For example, in the "Start Quiz Scene," the bot may present the user with quiz questions, and in the "Start Interview Scene," it may provide interview-related content.
 
-The functionality of the bot is implemented using object-oriented principles and is divided into separate methods, making the code more structured and easier to understand.
+Error Handling: Throughout the bot's operation, there are error handling mechanisms to catch any unexpected issues or errors that may occur. If an error is encountered, the bot sends appropriate error messages like MS_SORRY_ERROR to inform the user and gracefully handle the situation.
 
-This bot provides a simple way to manage a task list through Telegram and can be extended or modified according to the requirements of your application.
+Admin Functionality: The bot also includes an "Administration" feature that can be accessed by users with the role of "admin." Admins can access this functionality by selecting the ADMINISTRATION button. In the "Administration Scene," represented by START_ADMINISTRATION_SCENE, admins have access to additional functionalities such as managing users, questions, and administrators.
+
+Helper Functionality: The HELPER button provides users with a "Help" feature, where they can seek assistance or support from the bot. The bot may direct users to the "Send Help Scene," represented by SEND_HELP_SCENE, to handle user queries or provide relevant information.
+
+User Ban: If a user is banned, the bot displays the MS_SORRY_BAN message to inform them of their ban status, restricting certain functionalities.
+
+User Authorization: The bot might have an "Authorization" feature represented by START_AUTHORIZATION_SCENE, where new users can sign in or log in to access personalized features and store user-related data.
+
+In summary, the bot follows a structured scene-based approach to provide various functionalities to users based on their roles and inputs. It utilizes constants for buttons, scenes, and messages to maintain a consistent user interface and interaction experience. The bot's functionality is expanded for admin users who have access to additional administrative features. Error handling ensures smooth user experience even in unforeseen situations.
 
 

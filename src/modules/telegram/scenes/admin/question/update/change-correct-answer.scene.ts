@@ -1,7 +1,4 @@
-import {
-  BACK_TO_MAIN_MENU,
-  UPDATE_QUESTION,
-} from 'src/modules/telegram/constants/buttons';
+import { BACK_TO_MAIN_MENU } from 'src/modules/telegram/constants/buttons';
 import {
   MS_SEND_ID_AND_UPDATE_CORRECT_ANSWER,
   MS_WRONG_ID_QUESTION,

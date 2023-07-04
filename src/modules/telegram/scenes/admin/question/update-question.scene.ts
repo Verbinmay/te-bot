@@ -6,7 +6,6 @@ import {
   ADD_THIRD_WRONG_ANSWER_CREATOR,
   BACK_TO_MAIN_MENU,
   BACK_TO_PREVIOUS_MENU,
-  UPDATE_QUESTION,
 } from '../../../constants/buttons';
 import {
   CHANGE_CORRECT_ANSWER_ADMIN_SCENE,
@@ -23,7 +22,6 @@ import { ErrorService } from 'src/modules/telegram/services/error.service';
 
 import { ContextSceneType } from '../../../dto/types/context.type';
 import { MS_SELECT_AN_ACTION } from '../../../constants/messages.const';
-import { QuestionService } from '../../../services/question.service';
 import { getMessageText } from '../../../utils/get-message-text';
 
 @Scene(UPDATE_QUESTION_SCENE)

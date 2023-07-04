@@ -4,7 +4,6 @@ import { ContextSceneType } from '../dto/types/context.type';
 import { BACK_TO_MAIN_MENU } from '../constants/buttons';
 import { GET_INFO_ABOUT_ME_SCENE, START_MAIN_SCENE } from '../constants/scenes';
 import { User } from '../entities/user.entity';
-import { AnswerService } from '../services/answer.service';
 import { ErrorService } from '../services/error.service';
 import { QuestionService } from '../services/question.service';
 import { UserService } from '../services/user.service';
