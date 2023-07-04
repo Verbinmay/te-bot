@@ -1,7 +1,7 @@
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 import { Answer } from '../entities/answer.entity';
 import { CreatorQuestion } from '../entities/question-creator.entity';
@@ -12,6 +12,8 @@ export class QuestionService {
   constructor(
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
   ) {}
 
   async createByCreator(creatorQ: CreatorQuestion) {
@@ -24,7 +26,7 @@ export class QuestionService {
     question.isPublished = true;
 
     await this.questionRepository.create(question);
-    return this.questionRepository.save(question);
+    return await this.questionRepository.save(question);
   }
   async deleteById(id: number) {
     const deletedInfo = await this.questionRepository.delete({ id: id });
@@ -34,20 +36,20 @@ export class QuestionService {
     return true;
   }
   async getById(id: number) {
-    return this.questionRepository.findOneBy({ id: id });
+    return await this.questionRepository.findOneBy({ id: id });
   }
   async update(question: Question) {
-    return this.questionRepository.save(question);
+    return await this.questionRepository.save(question);
   }
   async create(question: Question) {
-    this.questionRepository.create(question);
-    return this.questionRepository.save(question);
+    await this.questionRepository.create(question);
+    return await this.questionRepository.save(question);
   }
   async getCount() {
-    return this.questionRepository.count();
+    return await this.questionRepository.count();
   }
-  async getAllWithPagination(num: number) {
-    return this.questionRepository.find({
+  async getTwentyWithPagination(num: number) {
+    return await this.questionRepository.find({
       where: {
         isPublished: true,
       },
@@ -56,39 +58,14 @@ export class QuestionService {
       take: 20,
     });
   }
-  //   async getAll() {
-  //     return this.taskRepository.find();
-  //   }
 
-  //   async getById(id: number) {
-  //     return this.taskRepository.findOneBy({ id: id });
-  //   }
-  //   async doneTask(id: number) {
-  //     const task: TaskEntity = await this.taskRepository.findOneBy({ id: id });
-
-  //     if (!task) return null;
-  //     task.isComplied = !task.isComplied;
-
-  //     await this.taskRepository.save(task);
-  //     return this.getAll();
-  //   }
-  //   async editTask(id: number, name: string) {
-  //     const task: TaskEntity | null = await this.taskRepository.findOneBy({
-  //       id: id,
-  //     });
-
-  //     if (!task) return null;
-
-  //     task.name = name;
-
-  //     await this.taskRepository.save(task);
-  //     return this.getAll();
-  //   }
-  //   async deleteTask(id: number) {
-  //     const deletedInfo = await this.taskRepository.delete({ id: id });
-
-  //     if (deletedInfo.affected === 0) return false;
-
-  //     return this.getAll();
-  //   }
+  async getFortyWithPagination() {
+    return await this.dataSource
+      .createQueryBuilder()
+      .select('question')
+      .from(Question, 'question')
+      .orderBy('RANDOM()')
+      .limit(40)
+      .getMany();
+  }
 }

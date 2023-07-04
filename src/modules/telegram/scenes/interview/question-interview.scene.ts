@@ -1,49 +1,35 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  INTERVIEW_QUESTIONS_SCENE,
   QUICK_QUESTIONS_SCENE,
   START_MAIN_SCENE,
 } from '../../constants/scenes';
-import { log } from 'console';
 import * as lodash from 'lodash';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import { Markup } from 'telegraf';
 
+import { ViewInterviewAnswerDto } from '../../dto/answer/view-answer-interview-dto';
 import { ViewAnswerQuizDto } from '../../dto/answer/view-answer-quiz-dto';
 import { ContextSceneType } from '../../dto/types/context.type';
 import { BACK_TO_MAIN_MENU } from '../../constants/buttons';
+import { MS_NO_WRONG_ANSWERS } from '../../constants/messages.const';
 import { Answer } from '../../entities/answer.entity';
 import { Question } from '../../entities/question.entity';
 import { User } from '../../entities/user.entity';
 import { AnswerService } from '../../services/answer.service';
 import { getMessageText } from '../../utils/get-message-text';
+import { getUserId } from '../../utils/get-user-id';
 import { showArrayOfObjectsLikeString } from '../../utils/show-array-like-string';
 
-@Scene(QUICK_QUESTIONS_SCENE)
-export class QuickQuestionsScene {
+@Scene(INTERVIEW_QUESTIONS_SCENE)
+export class InterviewQuestionsScene {
   constructor(private readonly answerService: AnswerService) {}
 
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
     //@ts-ignore
-    if (ctx.scene.state.quantity === 20) {
-      const incorrectQuestion: Array<Answer> =
-        //@ts-ignore
-        ctx.scene.state.answers.filter((a) => a.answerStatus === 'Incorrect');
-
-      const incorrectQuestionCount: number = incorrectQuestion.length;
-      const incorrectQuestionView: Array<ViewAnswerQuizDto> =
-        incorrectQuestionCount === 0
-          ? []
-          : incorrectQuestion.map((a) => {
-              return {
-                questionId: a.question.id,
-                question: a.question.body,
-                correctAnswer: a.question.correctAnswer,
-                yourAnswer: a.body,
-              };
-            });
-
-      for (let i = 0; i < 20; i++) {
+    if (ctx.scene.state.quantity === 40) {
+      for (let i = 0; i < 40; i++) {
         //@ts-ignore
         const answerState: Answer = ctx.scene.state.answers[i];
         //@ts-ignore
@@ -61,13 +47,35 @@ export class QuickQuestionsScene {
 
         await this.answerService.create(answerState);
       }
+
+      const incorrectQuestionCount: number =
+        //@ts-ignore
+        ctx.scene.state.answers.filter(
+          (a) => a.answerStatus === 'Incorrect',
+        ).length;
+
       ctx.reply(
         `Правильно: ${
           20 - incorrectQuestionCount
-        }.\nНеправильно: ${incorrectQuestionCount}\n\nОшибки: ${showArrayOfObjectsLikeString(
-          incorrectQuestionView,
-        )}`,
+        }.\nНеправильно: ${incorrectQuestionCount}\n\nТвои вопросы:`,
       );
+
+      const answers: Array<ViewInterviewAnswerDto> =
+        await this.answerService.findInterviewQuestions(
+          //@ts-ignore
+          ctx.scene.state.question,
+          getUserId(ctx),
+        );
+
+      let a = [];
+      for (let i = 0; i < answers.length; i++) {
+        a.push(answers[i]);
+
+        if (a.length === 10 || i === answers.length - 1) {
+          await ctx.reply(showArrayOfObjectsLikeString(a));
+          a = [];
+        }
+      }
       await ctx.scene.enter(START_MAIN_SCENE);
       return;
     }
@@ -83,14 +91,12 @@ export class QuickQuestionsScene {
       'answer_3',
     ]);
 
-    log(random, 'random');
     const message = `Вопрос:\n${question.body}\n\nОтвет 1:\n${
       question[random[0]]
     }\nОтвет 2:\n${question[random[1]]},\nОтвет 3:\n${
       question[random[2]]
     },\nОтвет 4:\n${question[random[3]]}`;
 
-    log(message, 'message');
     const showAnswerButtonQuestions = (array: Array<string>) => {
       const arrayOfQuestionAnswers: Array<any> = [];
 
@@ -99,7 +105,6 @@ export class QuickQuestionsScene {
           Markup.button.callback(`${i + 1}`, `${array[i]}`),
         );
       }
-      log(arrayOfQuestionAnswers, 'arrayOfQuestionAnswers');
       return Markup.inlineKeyboard(arrayOfQuestionAnswers, {
         columns: 3,
       });
@@ -136,7 +141,7 @@ export class QuickQuestionsScene {
     ctx.scene.state.answers.push(newAnswer);
     //@ts-ignore
     ctx.scene.state.quantity++;
-    await ctx.scene.enter(QUICK_QUESTIONS_SCENE, { ...ctx.scene.state });
+    await ctx.scene.enter(INTERVIEW_QUESTIONS_SCENE, { ...ctx.scene.state });
     return;
   }
   @On('text')

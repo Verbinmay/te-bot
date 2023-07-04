@@ -16,7 +16,7 @@ export const showDiapasonQuestions = (num: number) => {
   const arrayOfQuestionNumbers: Array<any> = [];
 
   for (let i = 0; i < num; i++) {
-    const createDiapason: string = `${1 + i * 2}` + ' - ' + `${20 + i * 20}`;
+    const createDiapason: string = `${i * 20 + 1}` + ' - ' + `${i * 20 + 20}`;
 
     arrayOfQuestionNumbers.push(Markup.button.callback(createDiapason, `${i}`));
   }

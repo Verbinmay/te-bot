@@ -8,6 +8,8 @@ export const MS_DONT_USE_PHONE_NUMBER =
 export const MS_ADMIN_HELLO_MESSAGE = 'Приятной работы, шеф 😼';
 export const MS_CHOOSE_THE_SUGGESTED_ACTION =
   'Выберите одно из предложенных действий';
+export const MS_CHOOSE_THE_SUGGESTED_DIAPASON =
+  'Выберите один из предложенных диапазонов';
 export const MS_SELECT_AN_ACTION = 'Выберите действие';
 export const MS_TYPE_AN_ADMIN_ID = 'Введите id администратора';
 export const MS_TYPE_AN_ADMIN_USERNAME = 'Введите username администратора';
@@ -30,6 +32,7 @@ export const MS_SORRY_BAN = 'Прости, ты в бане';
 export const MS_EXEL_MESSAGE = 'Запиши вопросы по примеру и отправь';
 export const MS_EXEL_DONE = 'Молодчина! Я закончил загружать вопросы';
 export const MS_NO_ADMINS = 'На данный момент администраторов нет, прости';
+export const MS_NO_QUESTIONS = 'На данный момент вопросов нет, прости';
 export const MS_SEND_YOUR_PROBLEM =
   'Что вас беспокои?Опишите проблему одним сообщением';
 export const MS_THANKS_TO_SENDED_PROBLEM =
@@ -37,3 +40,4 @@ export const MS_THANKS_TO_SENDED_PROBLEM =
 export const MS_YOU_WRONG_ANSWERS =
   'Вот список вопросов, на которые ты ответил неправильно';
 export const MS_NO_WRONG_ANSWERS = 'Ой! У тебя нет неправильных ответов';
+export const MS_ANSWERS_DONE = 'Ваши вопросы готовы. Продолжаем?';

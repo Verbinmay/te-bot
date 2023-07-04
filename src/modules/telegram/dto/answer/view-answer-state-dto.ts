@@ -1,9 +1,6 @@
 import { answerStatus } from './create-answer-dto';
+import { ViewAnswerQuizDto } from './view-answer-quiz-dto';
 
-export type ViewAnswerStateDto = {
-  questionId: number;
-  question: string;
-  correctAnswer: string;
-  yourAnswer: string;
+export class ViewAnswerStateDto extends ViewAnswerQuizDto {
   answerStatus: answerStatus;
-};
+}

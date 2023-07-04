@@ -9,7 +9,7 @@ import {
 import { log } from 'console';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
-import { ViewAnswerInterviewDto } from '../dto/answer/view-answer-interview-dto';
+import { ViewWrongAnswerDto } from '../dto/answer/view-wrong-answer-dto';
 import { ContextSceneType } from '../dto/types/context.type';
 import { BACK_TO_MAIN_MENU } from '../constants/buttons';
 import { AnswerService } from '../services/answer.service';
@@ -24,15 +24,12 @@ export class WrongAnswersStartScene {
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
     await ctx.reply(MS_YOU_WRONG_ANSWERS);
 
-    const answers: Array<ViewAnswerInterviewDto> =
+    const answers: Array<ViewWrongAnswerDto> =
       await this.answerService.findWrongQuestions(getUserId(ctx));
-    //
-    log(answers, 'answers');
 
     if (answers.length > 10) {
       let a = [];
       for (let i = 0; i < answers.length; i++) {
-        log(a, 'a');
         a.push(answers[i]);
 
         if (a.length === 10 || i === answers.length - 1) {
