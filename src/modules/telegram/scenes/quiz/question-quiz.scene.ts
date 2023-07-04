@@ -3,21 +3,19 @@ import {
   QUICK_QUESTIONS_SCENE,
   START_MAIN_SCENE,
 } from '../../constants/scenes';
-import { Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
+import * as lodash from 'lodash';
+import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { Markup } from 'telegraf';
 
-import { ViewAnswerInterviewDto } from '../../dto/answer/view-answer-interview-dto';
 import { ViewAnswerQuizDto } from '../../dto/answer/view-answer-quiz-dto';
-import { ViewAnswerStateDto } from '../../dto/answer/view-answer-state-dto';
 import { ContextSceneType } from '../../dto/types/context.type';
+import { BACK_TO_MAIN_MENU } from '../../constants/buttons';
 import { Answer } from '../../entities/answer.entity';
 import { Question } from '../../entities/question.entity';
 import { User } from '../../entities/user.entity';
 import { AnswerService } from '../../services/answer.service';
-import { UserService } from '../../services/user.service';
-import { getUserId } from '../../utils/get-user-id';
+import { getMessageText } from '../../utils/get-message-text';
 import { showArrayOfObjectsLikeString } from '../../utils/show-array-like-string';
-import { showObjectLikeString } from '../../utils/show-object-like-string';
-import { showArrayOfObjectsByUser } from '../../utils/show-users-or-admins';
 
 @Scene(QUICK_QUESTIONS_SCENE)
 export class QuickQuestionsScene {
@@ -60,13 +58,6 @@ export class QuickQuestionsScene {
           await this.answerService.delete(answeredBefore.id);
         }
 
-        // const newAnswer = new Answer();
-        // newAnswer.user = user;
-        // //@ts-ignore
-        // newAnswer.question = ctx.scene.state.question[i];
-        // newAnswer.answerStatus = answerState.answerStatus;
-        // newAnswer.body = answerState.yourAnswer;
-
         await this.answerService.create(answerState);
       }
       ctx.reply(
@@ -84,55 +75,73 @@ export class QuickQuestionsScene {
       //@ts-ignore
       ctx.scene.state.question[ctx.scene.state.quantity];
 
-    await ctx.reply(MS_TYPE_AN_ADMIN_USERNAME, {
+    const random = lodash.shuffle([
+      'correctAnswer',
+      'answer_1',
+      'answer_2',
+      'answer_3',
+    ]);
+
+    const message = `Вопрос:\n${question.body}\n\nОтвет 1:\n${
+      question[random[0]]
+    }\nОтвет 2:\n${question[random[1]]},\nОтвет 3:\n${
+      question[random[2]]
+    },\nОтвет 4:\n${question[random[3]]}`;
+
+    const showAnswerButtonQuestions = (array: Array<string>) => {
+      const arrayOfQuestionAnswers: Array<any> = [];
+
+      for (let i = 0; i < array.length; i++) {
+        arrayOfQuestionAnswers.push(
+          Markup.button.callback(`${i + 1}`, `${array[1]}`),
+        );
+      }
+      return Markup.inlineKeyboard(arrayOfQuestionAnswers, {
+        columns: 3,
+      });
+    };
+
+    await ctx.reply(message, showAnswerButtonQuestions(random));
+    await ctx.reply('----', {
       reply_markup: {
         resize_keyboard: true,
-        keyboard: [
-          [{ text: BACK_TO_PREVIOUS_MENU }],
-          [{ text: BACK_TO_MAIN_MENU }],
-        ],
+        keyboard: [[{ text: BACK_TO_MAIN_MENU }]],
       },
     });
   }
+  @On('callback_query')
+  async getQuery(@Ctx() ctx: ContextSceneType) {
+    const a: any = ctx.callbackQuery;
 
+    const question: Question =
+      //@ts-ignore
+      ctx.scene.state.question[ctx.scene.state.quantity];
+
+    const newAnswer = new Answer();
+    //@ts-ignore
+    newAnswer.user = ctx.scene.state.user;
+    newAnswer.question = question;
+    newAnswer.body = question[a.data];
+
+    if (a.data === 'correctAnswer') {
+      newAnswer.answerStatus = 'Correct';
+    } else {
+      newAnswer.answerStatus = 'Incorrect';
+    }
+    //@ts-ignore
+    ctx.scene.state.answers.push(newAnswer);
+    //@ts-ignore
+    ctx.scene.state.quantity++;
+    await ctx.scene.enter(QUICK_QUESTIONS_SCENE, { ...ctx.scene.state });
+    return;
+  }
   @On('text')
   async onText(@Ctx() ctx: ContextSceneType) {
     const text = getMessageText(ctx);
-    if (text.trim()) {
-      if (text === BACK_TO_PREVIOUS_MENU) {
-        await ctx.scene.enter(EDIT_ADMINISTRATORS_SCENE);
-      } else if (text === BACK_TO_MAIN_MENU) {
-        await ctx.scene.enter(START_MAIN_SCENE);
-      } else {
-        const updatedUser: boolean = await this.userService.addAdmin(text);
-        if (updatedUser) {
-          await ctx.reply(
-            `Пользователь с ником: ${text} успешно добавлен в администраторы`,
-            {
-              reply_markup: {
-                resize_keyboard: true,
-                keyboard: [
-                  [{ text: BACK_TO_PREVIOUS_MENU }],
-                  [{ text: BACK_TO_MAIN_MENU }],
-                ],
-              },
-            },
-          );
-        } else {
-          await ctx.reply(`Пользователь с ником ${text} не найден`, {
-            reply_markup: {
-              resize_keyboard: true,
-              keyboard: [
-                [{ text: BACK_TO_PREVIOUS_MENU }],
-                [{ text: BACK_TO_MAIN_MENU }],
-              ],
-            },
-          });
-        }
-        await ctx.reply(MS_TYPE_AN_ADMIN_USERNAME);
-      }
-    } else {
-      await ctx.reply(MS_TYPE_AN_ADMIN_USERNAME);
+
+    if (text === BACK_TO_MAIN_MENU) {
+      await ctx.scene.enter(START_MAIN_SCENE);
+      return;
     }
   }
 }

@@ -6,6 +6,7 @@ import {
   MS_NO_WRONG_ANSWERS,
   MS_YOU_WRONG_ANSWERS,
 } from '../constants/messages.const';
+import { log } from 'console';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ViewAnswerInterviewDto } from '../dto/answer/view-answer-interview-dto';
@@ -13,6 +14,7 @@ import { ContextSceneType } from '../dto/types/context.type';
 import { BACK_TO_MAIN_MENU } from '../constants/buttons';
 import { AnswerService } from '../services/answer.service';
 import { getUserId } from '../utils/get-user-id';
+import { showArrayOfObjectsLikeString } from '../utils/show-array-like-string';
 import { showObjectLikeString } from '../utils/show-object-like-string';
 
 @Scene(GET_MY_WRONG_ANSWERS_SCENE)
@@ -24,20 +26,24 @@ export class WrongAnswersStartScene {
 
     const answers: Array<ViewAnswerInterviewDto> =
       await this.answerService.findWrongQuestions(getUserId(ctx));
+    //
+    log(answers, 'answers');
+
     if (answers.length > 10) {
+      let a = [];
       for (let i = 0; i < answers.length; i++) {
-        let a = [];
-        answers.push(answers[i]);
+        log(a, 'a');
+        a.push(answers[i]);
 
         if (a.length === 10 || i === answers.length - 1) {
-          await ctx.reply(showObjectLikeString(a));
+          await ctx.reply(showArrayOfObjectsLikeString(a));
           a = [];
         }
       }
     } else if (answers.length === 0) {
       await ctx.reply(MS_NO_WRONG_ANSWERS);
     } else {
-      await ctx.reply(showObjectLikeString(answers));
+      await ctx.reply(showArrayOfObjectsLikeString(answers));
     }
 
     await ctx.reply('--------', {
