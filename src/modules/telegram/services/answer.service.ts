@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ViewInterviewAnswerDto } from '../dto/answer/view-answer-interview-dto';
 import { ViewWrongAnswerDto } from '../dto/answer/view-wrong-answer-dto';
 import { Question } from '../entities/question.entity';
-import { UserService } from './user.service';
 
 @Injectable()
 export class AnswerService {
@@ -17,9 +16,9 @@ export class AnswerService {
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>, // private readonly userService: UserService,
   ) {}
-
+  //TODO
   async findWrongQuestions(telegramId: string) {
-    const questions: Array<Question> = await this.questionRepository.find({
+    const questionIHave: Array<Question> = await this.questionRepository.find({
       relations: {
         answers: { user: true },
       },
@@ -29,6 +28,13 @@ export class AnswerService {
           user: { telegramId: telegramId },
         },
       },
+    });
+    if (questionIHave.length === 0) return [];
+    const questions: Array<Question> = await this.questionRepository.find({
+      relations: {
+        answers: { user: true },
+      },
+      where: { id: In(questionIHave.map((q) => q.id)) },
     });
 
     const viewAnswers: Array<ViewWrongAnswerDto> = questions.map((q) => {

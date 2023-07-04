@@ -7,10 +7,14 @@ import {
   ADD_QUESTION_SCENE,
   START_MAIN_SCENE,
 } from '../../../../constants/scenes';
+import {
+  BACK_TO_MAIN_MENU,
+  CHANGED_MY_MIND,
+} from '../../../../constants/buttons';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { ErrorService } from 'src/modules/telegram/services/error.service';
 
 import { ContextSceneType } from '../../../../dto/types/context.type';
-import { BACK_TO_MAIN_MENU, CHANGED_MY_MIND } from '../../../../constants/buttons';
 import { CreatorQuestion } from '../../../../entities/question-creator.entity';
 import { CreatorQuestionService } from '../../../../services/question.creator.service';
 import { getMessageText } from '../../../../utils/get-message-text';
@@ -22,39 +26,50 @@ const keyboard = [[{ text: BACK_TO_MAIN_MENU }], [{ text: CHANGED_MY_MIND }]];
 export class CreatorQuestionsScene {
   constructor(
     private readonly creatorQuestionService: CreatorQuestionService,
+    private readonly errorService: ErrorService,
   ) {}
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
-    await ctx.reply(MS_SEND_QUESTION, {
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: keyboard,
-      },
-    });
+    try {
+      await ctx.reply(MS_SEND_QUESTION, {
+        reply_markup: {
+          resize_keyboard: true,
+          keyboard: keyboard,
+        },
+      });
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
+    }
   }
 
   @On('text')
   async textHandle(@Ctx() ctx: ContextSceneType) {
-    const text: string = getMessageText(ctx).trim();
+    try {
+      const text: string = getMessageText(ctx).trim();
 
-    if (text == BACK_TO_MAIN_MENU) {
-      await ctx.scene.enter(ADD_QUESTION_SCENE);
-    } else if (text == CHANGED_MY_MIND) {
-      await this.creatorQuestionService.deleteByTelegramId(getUserId(ctx));
-      await ctx.scene.enter(START_MAIN_SCENE);
-    } else {
-      const creatorQ = new CreatorQuestion();
-      creatorQ.telegramId = getUserId(ctx);
-      creatorQ.body = text;
-
-      const saved = await this.creatorQuestionService.create(creatorQ);
-
-      if (saved.body !== text) {
+      if (text == BACK_TO_MAIN_MENU) {
+        await ctx.scene.enter(ADD_QUESTION_SCENE);
+      } else if (text == CHANGED_MY_MIND) {
         await this.creatorQuestionService.deleteByTelegramId(getUserId(ctx));
-        await ctx.reply(MS_SORRY_ERROR);
         await ctx.scene.enter(START_MAIN_SCENE);
+      } else {
+        const creatorQ = new CreatorQuestion();
+        creatorQ.telegramId = getUserId(ctx);
+        creatorQ.body = text;
+
+        const saved = await this.creatorQuestionService.create(creatorQ);
+
+        if (saved.body !== text) {
+          await this.creatorQuestionService.deleteByTelegramId(getUserId(ctx));
+          await ctx.reply(MS_SORRY_ERROR);
+          await ctx.scene.enter(START_MAIN_SCENE);
+        }
+        await ctx.scene.enter(ADD_QUESTION_SCENE);
       }
-      await ctx.scene.enter(ADD_QUESTION_SCENE);
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
     }
   }
 }

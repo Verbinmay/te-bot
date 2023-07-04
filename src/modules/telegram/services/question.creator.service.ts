@@ -1,11 +1,9 @@
-import { log } from 'console';
 import { Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreatorQuestion } from '../entities/question-creator.entity';
-import { Question } from '../entities/question.entity';
 
 @Injectable()
 export class CreatorQuestionService {

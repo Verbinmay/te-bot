@@ -33,6 +33,7 @@ import { Answer } from './entities/answer.entity';
 import { CreatorQuestion } from './entities/question-creator.entity';
 import { Question } from './entities/question.entity';
 import { User } from './entities/user.entity';
+import { GetInfoStartScene } from './scenes/about-me-start.scene';
 import { AdministrationStartScene } from './scenes/administration-start.scene';
 import { AuthorizationScene } from './scenes/authorization.scene';
 import { HelpersStartScene } from './scenes/helpers-start.scene';
@@ -41,6 +42,7 @@ import { MainScene } from './scenes/main.scene';
 import { QuizStartScene } from './scenes/quick-questions-start.scene';
 import { WrongAnswersStartScene } from './scenes/wrong-answers-start.scene';
 import { AnswerService } from './services/answer.service';
+import { ErrorService } from './services/error.service';
 import { CreatorQuestionService } from './services/question.creator.service';
 import { QuestionService } from './services/question.service';
 import { UserService } from './services/user.service';
@@ -79,6 +81,7 @@ const scenes = [
   QuickQuestionsScene,
   InterviewStartScene,
   InterviewQuestionsScene,
+  GetInfoStartScene,
 ];
 
 /** сервисы */
@@ -88,6 +91,7 @@ const services = [
   CreatorQuestionService,
   QuestionService,
   UserService,
+  ErrorService,
 ];
 
 @Module({

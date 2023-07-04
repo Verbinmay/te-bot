@@ -18,48 +18,60 @@ import {
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ContextSceneType } from '../dto/types/context.type';
+import { ErrorService } from '../services/error.service';
 
 @Scene(START_ADMINISTRATION_SCENE)
 export class AdministrationStartScene {
+  constructor(private readonly errorService: ErrorService) {}
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
-    await ctx.reply(MS_ADMIN_HELLO_MESSAGE, {
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: [
-          [{ text: EDIT_ADMINISTRATORS }],
-          [{ text: EDIT_QUESTIONS }],
-          [{ text: EDIT_USERS }],
-          [{ text: BACK_TO_MAIN_MENU }],
-        ],
-      },
-    });
+    try {
+      await ctx.reply(MS_ADMIN_HELLO_MESSAGE, {
+        reply_markup: {
+          resize_keyboard: true,
+          keyboard: [
+            [{ text: EDIT_ADMINISTRATORS }],
+            [{ text: EDIT_QUESTIONS }],
+            [{ text: EDIT_USERS }],
+            [{ text: BACK_TO_MAIN_MENU }],
+          ],
+        },
+      });
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
+    }
   }
 
   @On('text')
   async handleText(@Ctx() ctx: ContextSceneType) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const text = ctx.message.text;
-    switch (text) {
-      case EDIT_ADMINISTRATORS:
-        await ctx.scene.enter(EDIT_ADMINISTRATORS_SCENE);
-        break;
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const text = ctx.message.text;
+      switch (text) {
+        case EDIT_ADMINISTRATORS:
+          await ctx.scene.enter(EDIT_ADMINISTRATORS_SCENE);
+          break;
 
-      case EDIT_QUESTIONS:
-        await ctx.scene.enter(EDIT_QUESTIONS_SCENE);
-        break;
+        case EDIT_QUESTIONS:
+          await ctx.scene.enter(EDIT_QUESTIONS_SCENE);
+          break;
 
-      case EDIT_USERS:
-        await ctx.scene.enter(EDIT_USERS_SCENE);
-        break;
+        case EDIT_USERS:
+          await ctx.scene.enter(EDIT_USERS_SCENE);
+          break;
 
-      case BACK_TO_MAIN_MENU:
-        await ctx.scene.enter(START_MAIN_SCENE);
-        break;
+        case BACK_TO_MAIN_MENU:
+          await ctx.scene.enter(START_MAIN_SCENE);
+          break;
 
-      default:
-        await ctx.reply(MS_CHOOSE_THE_SUGGESTED_ACTION);
+        default:
+          await ctx.reply(MS_CHOOSE_THE_SUGGESTED_ACTION);
+      }
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
     }
   }
 }

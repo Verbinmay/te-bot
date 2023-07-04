@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { User } from 'src/modules/telegram/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -49,6 +48,12 @@ export class UserService {
   }
   async getByTelegramId(telegramId: string) {
     return await this.userRepository.findOne({
+      where: { telegramId: telegramId },
+    });
+  }
+  async getByTelegramIdWithAnswers(telegramId: string) {
+    return await this.userRepository.findOne({
+      relations: { answers: true },
       where: { telegramId: telegramId },
     });
   }

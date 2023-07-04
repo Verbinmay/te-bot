@@ -22,6 +22,7 @@ import {
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ContextSceneType } from '../../dto/types/context.type';
+import { ErrorService } from '../../services/error.service';
 import { getMessageText } from '../../utils/get-message-text';
 
 const keyboard = [
@@ -35,45 +36,56 @@ const keyboard = [
 
 @Scene(EDIT_QUESTIONS_SCENE)
 export class EditQuestionsScene {
+  constructor(private readonly errorService: ErrorService) {}
   @SceneEnter()
   async sceneEnter(@Ctx() ctx: ContextSceneType) {
-    await ctx.reply(MS_CHOOSE_THE_SUGGESTED_ACTION, {
-      reply_markup: {
-        resize_keyboard: true,
-        keyboard: keyboard,
-      },
-    });
+    try {
+      await ctx.reply(MS_CHOOSE_THE_SUGGESTED_ACTION, {
+        reply_markup: {
+          resize_keyboard: true,
+          keyboard: keyboard,
+        },
+      });
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
+    }
   }
 
   @On('text')
   async textHandle(@Ctx() ctx: ContextSceneType) {
-    const text = getMessageText(ctx);
-    switch (text) {
-      case ADD_QUESTION:
-        await ctx.scene.enter(ADD_QUESTION_SCENE);
-        break;
-      case DELETE_QUESTION:
-        await ctx.scene.enter(DELETE_QUESTION_SCENE);
-        break;
-      case UPDATE_QUESTION:
-        await ctx.scene.enter(UPDATE_QUESTION_SCENE);
-        break;
-      case EXEL_QUESTION:
-        await ctx.scene.enter(EXEL_QUESTION_SCENE);
-        break;
-      case BACK_TO_PREVIOUS_MENU:
-        await ctx.scene.enter(START_ADMINISTRATION_SCENE, ctx.scene.state);
-        break;
-      case BACK_TO_MAIN_MENU:
-        await ctx.scene.enter(START_MAIN_SCENE, ctx.scene.state);
-        break;
-      default:
-        await ctx.reply(MS_SELECT_AN_ACTION, {
-          reply_markup: {
-            resize_keyboard: true,
-            keyboard: keyboard,
-          },
-        });
+    try {
+      const text = getMessageText(ctx);
+      switch (text) {
+        case ADD_QUESTION:
+          await ctx.scene.enter(ADD_QUESTION_SCENE);
+          break;
+        case DELETE_QUESTION:
+          await ctx.scene.enter(DELETE_QUESTION_SCENE);
+          break;
+        case UPDATE_QUESTION:
+          await ctx.scene.enter(UPDATE_QUESTION_SCENE);
+          break;
+        case EXEL_QUESTION:
+          await ctx.scene.enter(EXEL_QUESTION_SCENE);
+          break;
+        case BACK_TO_PREVIOUS_MENU:
+          await ctx.scene.enter(START_ADMINISTRATION_SCENE, ctx.scene.state);
+          break;
+        case BACK_TO_MAIN_MENU:
+          await ctx.scene.enter(START_MAIN_SCENE, ctx.scene.state);
+          break;
+        default:
+          await ctx.reply(MS_SELECT_AN_ACTION, {
+            reply_markup: {
+              resize_keyboard: true,
+              keyboard: keyboard,
+            },
+          });
+      }
+    } catch (error) {
+      await this.errorService.makeError(error, ctx);
+      return;
     }
   }
 }
