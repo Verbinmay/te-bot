@@ -25,7 +25,7 @@ export const entities = [User, Answer, Question, CreatorQuestion];
         launchOptions: {
           webhook: {
             domain: 'iterviewer.onrender.com',
-            hookPath: '/secret-path',
+            // hookPath: '/secret-path',
           },
         },
         middlewares: [sessionMiddleware],
