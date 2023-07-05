@@ -2,6 +2,7 @@ import {
   START_AUTHORIZATION_SCENE,
   START_MAIN_SCENE,
 } from './constants/scenes';
+import { log } from 'console';
 import { Ctx, Start, Update } from 'nestjs-telegraf';
 
 import { ContextSceneType } from './dto/types/context.type';

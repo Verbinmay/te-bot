@@ -24,7 +24,8 @@ export const entities = [User, Answer, Question, CreatorQuestion];
         token: configService.get<string>('TOKEN'),
         launchOptions: {
           webhook: {
-            domain: 'iterviewer.onrender.com',
+            domain: configService.get('DOMAIN'),
+            hookPath: '/telegram',
           },
         },
         middlewares: [sessionMiddleware],
