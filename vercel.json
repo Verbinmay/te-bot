@@ -1,16 +1,9 @@
 {
-"version": 2,
-"name": "interviewBot",
-"builds": [
-  {
-    "src": "src/main.ts",
-    "use": "@vercel/node"
-  }
-],
-"routes": [
-  {
-    "src": "/(.*)",
-    "dest": "src/main.ts"
-  }
-]
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
+  ]
 }
