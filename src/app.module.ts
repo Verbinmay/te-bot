@@ -22,6 +22,12 @@ export const entities = [User, Answer, Question, CreatorQuestion];
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         token: configService.get<string>('TOKEN'),
+        launchOptions: {
+          webhook: {
+            domain: 'iterviewer.onrender.com',
+            hookPath: '/secret-path',
+          },
+        },
         middlewares: [sessionMiddleware],
       }),
     }),
