@@ -48,6 +48,9 @@ import { QuestionService } from './modules/telegram/services/question.service';
 import { UserService } from './modules/telegram/services/user.service';
 // import { TelegramModule } from './modules/telegram/telegram.module';
 import { TelegramUpdate } from './modules/telegram/telegram.update';
+import { AllExceptionsFilter } from './filters/exception.filter';
+import { LoggingInterceptor } from './interceptors/logger.interceptor';
+import { AppController } from './app.controller';
 
 export const entities = [User, Answer, Question, CreatorQuestion];
 
@@ -134,6 +137,7 @@ const scenes = [
     }),
     TypeOrmModule.forFeature([User, Answer, Question, CreatorQuestion]),
   ],
+  controllers: [AppController],
   providers: [...scenes, ...services],
 })
 export class AppModule {}
