@@ -95,9 +95,9 @@ export class InterviewQuestionsScene {
 
       const message = `Вопрос:\n${question.body}\n\nОтвет 1:\n${
         question[random[0]]
-      }\nОтвет 2:\n${question[random[1]]},\nОтвет 3:\n${
+      }\nОтвет 2:\n${question[random[1]]}\nОтвет 3:\n${
         question[random[2]]
-      },\nОтвет 4:\n${question[random[3]]}`;
+      }\nОтвет 4:\n${question[random[3]]}`;
 
       const showAnswerButtonQuestions = (array: Array<string>) => {
         const arrayOfQuestionAnswers: Array<any> = [];
