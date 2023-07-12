@@ -6,6 +6,7 @@ import {
   HELPER,
   INFO_BY_ME,
   RELOAD,
+  WHAT_I_CAN,
 } from '../constants/buttons';
 import {
   GET_INFO_ABOUT_ME_SCENE,
@@ -15,6 +16,7 @@ import {
   START_INTERVIEW_SCENE,
   START_MAIN_SCENE,
   START_QUIZ_SCENE,
+  WHAT_I_CAN_SCENE,
 } from '../constants/scenes';
 import {
   MS_MAIN_ACTION,
@@ -48,6 +50,7 @@ export class MainScene {
         [{ text: FORTY_QUESTION }],
         [{ text: INFO_BY_ME }],
         [{ text: MY_WRONG_ANSWERS }],
+        [{ text: WHAT_I_CAN }],
         [{ text: HELPER }],
         [{ text: RELOAD }],
       ];
@@ -90,6 +93,9 @@ export class MainScene {
       switch (text) {
         case TWENTY_QUESTION:
           await ctx.scene.enter(START_QUIZ_SCENE);
+          break;
+        case WHAT_I_CAN:
+          await ctx.scene.enter(WHAT_I_CAN_SCENE);
           break;
         case FORTY_QUESTION:
           await ctx.scene.enter(START_INTERVIEW_SCENE);

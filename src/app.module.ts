@@ -40,6 +40,7 @@ import { HelpersStartScene } from './modules/telegram/scenes/helpers-start.scene
 import { InterviewStartScene } from './modules/telegram/scenes/interview-questions-start.scene';
 import { MainScene } from './modules/telegram/scenes/main.scene';
 import { QuizStartScene } from './modules/telegram/scenes/quick-questions-start.scene';
+import { WhatICanScene } from './modules/telegram/scenes/what-i-can.scene';
 import { WrongAnswersStartScene } from './modules/telegram/scenes/wrong-answers-start.scene';
 import { AnswerService } from './modules/telegram/services/answer.service';
 import { ErrorService } from './modules/telegram/services/error.service';
@@ -96,6 +97,7 @@ const scenes = [
   RemoveAdministratorScene,
   UnBanUserScene,
   UpdateQuestionScene,
+  WhatICanScene,
   WrongAnswersStartScene,
 ];
 

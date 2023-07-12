@@ -22,6 +22,7 @@ export const EDIT_USERS = 'Редактировать пользователей
 export const EXEL_QUESTION = 'EXEL';
 export const FORTY_QUESTION = 'Собеседование 👔';
 export const HELPER = 'Помощь 🛎️';
+export const WHAT_I_CAN = 'Что я могу? 🥸';
 export const INFO_BY_ME = 'Обо мне 👤';
 export const LETS_START_FIESTA = 'Погнали 💪🏻';
 export const MY_WRONG_ANSWERS = 'Неправильные ответы 🌚';
