@@ -11,14 +11,14 @@ export class ErrorService {
   constructor(private readonly userService: UserService) {}
 
   async makeError(errorMessage: any, ctx: ContextSceneType) {
-    console.log(errorMessage);
     await ctx.reply(MS_SORRY_ERROR);
+    console.log(errorMessage, 'errorMessage');
     const admins: Array<User> = await this.userService.getAllAdministrators();
     if (admins.length === 0) {
       await ctx.reply(MS_NO_ADMINS);
     }
     const adminId = admins[0].telegramId;
-    const text = `ERROR ${errorMessage}`;
+    const text = `ERROR ${JSON.stringify(errorMessage)}`;
     await ctx.telegram.sendMessage(adminId, text);
     await ctx.scene.enter(START_MAIN_SCENE);
     return;

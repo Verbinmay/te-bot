@@ -47,10 +47,7 @@ import { ErrorService } from './modules/telegram/services/error.service';
 import { CreatorQuestionService } from './modules/telegram/services/question.creator.service';
 import { QuestionService } from './modules/telegram/services/question.service';
 import { UserService } from './modules/telegram/services/user.service';
-// import { TelegramModule } from './modules/telegram/telegram.module';
 import { TelegramUpdate } from './modules/telegram/telegram.update';
-import { AllExceptionsFilter } from './filters/exception.filter';
-import { LoggingInterceptor } from './interceptors/logger.interceptor';
 import { AppController } from './app.controller';
 
 export const entities = [User, Answer, Question, CreatorQuestion];
@@ -103,19 +100,13 @@ const scenes = [
 
 @Module({
   imports: [
-    // TelegramModule,
     ConfigModule.forRoot(),
     TelegrafModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         token: configService.get<string>('TOKEN'),
-        launchOptions: {
-          webhook: {
-            domain: configService.get('DOMAIN'),
-            hookPath: '/telegram',
-          },
-        },
+        ...FuncByTelegramModule(configService),
         middlewares: [sessionMiddleware],
       }),
     }),
@@ -124,13 +115,11 @@ const scenes = [
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        // host: configService.get('DB_HOST'),
-        url: configService.get('DB_URL'),
-        // port: +configService.get<number>('DB_PORT'),
+        ...FuncByTypeOrmModule(configService),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        ssl: true,
+        ssl: configService.get('CON') !== 'dev' ? true : false,
         entities: [...entities],
         autoLoadEntities: true,
         synchronize: true,
@@ -143,3 +132,31 @@ const scenes = [
   providers: [...scenes, ...services],
 })
 export class AppModule {}
+
+function FuncByTypeOrmModule(configService: ConfigService) {
+  if (configService.get('CON') === 'dev') {
+    return {
+      host: configService.get('DB_HOST'),
+      port: +configService.get<number>('DB_PORT'),
+    };
+  } else {
+    return {
+      url: configService.get('DB_URL'),
+    };
+  }
+}
+
+function FuncByTelegramModule(configService: ConfigService) {
+  if (configService.get('CON') !== 'dev') {
+    return {
+      launchOptions: {
+        webhook: {
+          domain: configService.get('DOMAIN'),
+          hookPath: '/telegram',
+        },
+      },
+    };
+  } else {
+    return {};
+  }
+}

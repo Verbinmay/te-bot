@@ -68,7 +68,7 @@ export class QuickQuestionsScene {
         ctx.reply(
           `Правильно: ${
             20 - incorrectQuestionCount
-          }.\nНеправильно: ${incorrectQuestionCount}\n\nОшибки: ${showArrayOfObjectsLikeString(
+          }.\nНеправильно: ${incorrectQuestionCount}\n\nОшибки:\n${showArrayOfObjectsLikeString(
             incorrectQuestionView,
           )}`,
         );
@@ -107,13 +107,21 @@ export class QuickQuestionsScene {
         });
       };
 
-      await ctx.reply(message, showAnswerButtonQuestions(random));
-      await ctx.reply('', {
-        reply_markup: {
-          resize_keyboard: true,
-          keyboard: [[{ text: BACK_TO_MAIN_MENU }]],
-        },
-      });
+      const sendedQuestion = await ctx.reply(
+        message,
+        showAnswerButtonQuestions(random),
+      );
+      //@ts-ignore
+      ctx.scene.state.messageId = sendedQuestion.message_id;
+      //@ts-ignore
+      if (ctx.scene.state.quantity === 0) {
+        await ctx.reply('-+-+-+-+-+-+-+-+-', {
+          reply_markup: {
+            resize_keyboard: true,
+            keyboard: [[{ text: BACK_TO_MAIN_MENU }]],
+          },
+        });
+      }
     } catch (error) {
       await this.errorService.makeError(error, ctx);
       return;
@@ -143,6 +151,8 @@ export class QuickQuestionsScene {
       ctx.scene.state.answers.push(newAnswer);
       //@ts-ignore
       ctx.scene.state.quantity++;
+      //@ts-ignore
+      await ctx.deleteMessage(ctx.scene.state.messageId);
       await ctx.scene.enter(QUICK_QUESTIONS_SCENE, { ...ctx.scene.state });
       return;
     } catch (error) {

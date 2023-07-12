@@ -26,6 +26,7 @@ async function bootstrap() {
     424027533,
     `hello from ${configService.get('DOMAIN')}`,
   );
+
   await app.listen(process.env.PORT || 3000);
 }
 
