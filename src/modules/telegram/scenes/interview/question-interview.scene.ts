@@ -31,6 +31,7 @@ export class InterviewQuestionsScene {
     try {
       //@ts-ignore
       if (ctx.scene.state.quantity === 40) {
+        /**Созданный массив ответов будет публиковаться в базу данных или перезаписываться, если ранее ответ на вопрос был дан. Будет сформирован ответ пользователю: статистика ответов и сами ответы, отправляемые по 10 за раз */
         for (let i = 0; i < 40; i++) {
           //@ts-ignore
           const answerState: Answer = ctx.scene.state.answers[i];
@@ -113,7 +114,7 @@ export class InterviewQuestionsScene {
       };
 
       await ctx.reply(message, showAnswerButtonQuestions(random));
-      await ctx.reply('----', {
+      await ctx.reply('', {
         reply_markup: {
           resize_keyboard: true,
           keyboard: [[{ text: BACK_TO_MAIN_MENU }]],

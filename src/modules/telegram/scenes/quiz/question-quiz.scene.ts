@@ -108,7 +108,7 @@ export class QuickQuestionsScene {
       };
 
       await ctx.reply(message, showAnswerButtonQuestions(random));
-      await ctx.reply('----', {
+      await ctx.reply('', {
         reply_markup: {
           resize_keyboard: true,
           keyboard: [[{ text: BACK_TO_MAIN_MENU }]],
