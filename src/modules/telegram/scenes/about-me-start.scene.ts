@@ -34,9 +34,11 @@ export class GetInfoStartScene {
 
       const message = `Общее количество вопросов: ${questionCount}\nКоличество правильных ответов:${rightAnswers}\nКоличество неправильных ответов: ${
         user.answers.filter((a) => a.answerStatus === 'Incorrect').length
-      }\nПроцент правильных ответов: ${Math.floor(
-        (rightAnswers / user.answers.length) * 100,
-      )}\nВы на ${Math.floor(rightAnswers / 10)} ступени из ${Math.floor(
+      }\nПроцент правильных ответов: ${
+        rightAnswers > 0
+          ? Math.floor((rightAnswers / user.answers.length) * 100)
+          : 0
+      }\nВы на ${Math.floor(rightAnswers / 10)} ступени из ${Math.floor(
         questionCount / 10,
       )}`;
 
