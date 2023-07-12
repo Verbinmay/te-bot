@@ -44,10 +44,11 @@ export class AnswerService {
         'Правильный ответ': q.correctAnswer,
         'Твой ответ': q.answers.find((a) => a.user.telegramId === telegramId)
           .body,
-        'Процент ответивших неправильно':
+        'Процент ответивших неправильно': Math.floor(
           (q.answers.filter((a) => a.answerStatus === 'Incorrect').length /
             q.answers.length) *
-          100,
+            100,
+        ),
       };
     });
     return viewAnswers;

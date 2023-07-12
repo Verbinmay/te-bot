@@ -46,7 +46,7 @@ export class WrongAnswersStartScene {
         await ctx.reply(showArrayOfObjectsLikeString(answers));
       }
 
-      await ctx.reply('--------', {
+      await ctx.reply('', {
         reply_markup: {
           resize_keyboard: true,
           keyboard: [[{ text: BACK_TO_MAIN_MENU }]],
