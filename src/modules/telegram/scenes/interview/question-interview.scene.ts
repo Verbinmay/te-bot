@@ -58,7 +58,7 @@ export class InterviewQuestionsScene {
 
         ctx.reply(
           `Правильно: ${
-            20 - incorrectQuestionCount
+            40 - incorrectQuestionCount
           }.\nНеправильно: ${incorrectQuestionCount}\n\nТвои вопросы:`,
         );
 

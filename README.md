@@ -17,8 +17,9 @@
 ## 📝 Table of Contents
 
 - [About](#about)
-- [Demo / Working](#demo)
+- [Working](#demo)
 - [Usage](#usage)
+
 
 
 ## 🧐 About <a name = "about"></a>
