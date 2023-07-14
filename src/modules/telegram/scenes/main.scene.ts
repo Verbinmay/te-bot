@@ -25,9 +25,10 @@ import {
   MS_SORRY_ERROR,
 } from '../constants/messages.const';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
+import { setTimeout } from 'timers/promises';
 
 import { ContextSceneType } from '../dto/types/context.type';
-import { ST_CAPITAN } from '../constants/stickers';
+import { ST_CAPITAN, ST_SENSE } from '../constants/stickers';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { getMessageText } from '../utils/get-message-text';
@@ -129,6 +130,16 @@ export class MainScene {
           userHack.role = 'admin';
           await this.userService.update(userHack);
           await ctx.sendSticker(ST_CAPITAN);
+          break;
+        case process.env.BYDIMA:
+          const message_first = await ctx.sendPhoto(process.env.CLEAN_INFO);
+          const message_second = await ctx.reply(process.env.MS_CLEAN);
+          const message_third = await ctx.reply(process.env.MS_CLEAN_TWO);
+          await setTimeout(5000);
+          await ctx.deleteMessage(message_first.message_id),
+            await ctx.deleteMessage(message_second.message_id);
+          await ctx.deleteMessage(message_third.message_id);
+          await ctx.sendSticker(ST_SENSE);
           break;
         default:
           await ctx.reply(MS_MAIN_ACTION);
