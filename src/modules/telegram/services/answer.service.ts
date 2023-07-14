@@ -89,6 +89,21 @@ export class AnswerService {
     });
   }
 
+  async getAllAnswersMap() {
+    const answers = await this.answerRepository.find({
+      relations: { user: true, question: true },
+    });
+    return answers.map((a) => {
+      return {
+        ...a,
+        user: a.user.userName,
+        question: a.question.body,
+        questionId: a.question.id,
+        questionCorrectAnswer: a.question.correctAnswer,
+      };
+    });
+  }
+
   async delete(answerId: number) {
     return await this.answerRepository.delete({ id: answerId });
   }

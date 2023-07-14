@@ -67,4 +67,7 @@ export class UserService {
       where: { role: 'admin' },
     });
   }
+  async getAllUsers() {
+    return await this.userRepository.find({});
+  }
 }

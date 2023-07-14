@@ -19,6 +19,7 @@ export const DELETE_QUESTION = 'Удалить вопрос';
 export const EDIT_ADMINISTRATORS = 'Редактировать администраторов';
 export const EDIT_QUESTIONS = 'Редактировать вопросы';
 export const EDIT_USERS = 'Редактировать пользователей';
+export const SAVE_DB = 'Скачать базу';
 export const EXEL_QUESTION = 'EXEL';
 export const FORTY_QUESTION = 'Собеседование 👔';
 export const HELPER = 'Помощь 🛎️';

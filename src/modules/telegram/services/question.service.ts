@@ -37,6 +37,9 @@ export class QuestionService {
   async getById(id: number) {
     return await this.questionRepository.findOneBy({ id: id });
   }
+  async getAllQuestions() {
+    return await this.questionRepository.find({});
+  }
   async update(question: Question) {
     return await this.questionRepository.save(question);
   }

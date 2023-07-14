@@ -3,6 +3,7 @@ import {
   EDIT_QUESTIONS,
   EDIT_USERS,
   BACK_TO_MAIN_MENU,
+  SAVE_DB,
 } from '../constants/buttons';
 import {
   EDIT_ADMINISTRATORS_SCENE,
@@ -15,6 +16,7 @@ import {
   MS_ADMIN_HELLO_MESSAGE,
   MS_CHOOSE_THE_SUGGESTED_ACTION,
 } from '../constants/messages.const';
+import * as fs from 'fs';
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 
 import { ContextSceneType } from '../dto/types/context.type';
@@ -33,6 +35,7 @@ export class AdministrationStartScene {
             [{ text: EDIT_ADMINISTRATORS }],
             [{ text: EDIT_QUESTIONS }],
             [{ text: EDIT_USERS }],
+            [{ text: SAVE_DB }],
             [{ text: BACK_TO_MAIN_MENU }],
           ],
         },
@@ -60,6 +63,18 @@ export class AdministrationStartScene {
 
         case EDIT_USERS:
           await ctx.scene.enter(EDIT_USERS_SCENE);
+          break;
+
+        case SAVE_DB:
+          const doc = await this.errorService.dbExcel();
+          console.log(doc);
+          // const fileStream = fs.createReadStream('exel.xlsx');
+          // console.log(fileStream);
+          await ctx.replyWithDocument({
+            source: doc,
+            filename: 'exel.xlsx',
+          });
+
           break;
 
         case BACK_TO_MAIN_MENU:
