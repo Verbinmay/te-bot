@@ -132,14 +132,20 @@ export class MainScene {
           await ctx.sendSticker(ST_CAPITAN);
           break;
         case process.env.BYDIMA:
-          const message_first = await ctx.sendPhoto(process.env.CLEAN_INFO);
-          const message_second = await ctx.reply(process.env.MS_CLEAN);
-          const message_third = await ctx.reply(process.env.MS_CLEAN_TWO);
-          await setTimeout(5000);
-          await ctx.deleteMessage(message_first.message_id),
+          if (
+            process.env.CLEAN_INFO &&
+            process.env.MS_CLEAN &&
+            process.env.MS_CLEAN_TWO
+          ) {
+            const message_first = await ctx.sendPhoto(process.env.CLEAN_INFO);
+            const message_second = await ctx.reply(process.env.MS_CLEAN);
+            const message_third = await ctx.reply(process.env.MS_CLEAN_TWO);
+            await setTimeout(5000);
+            await ctx.deleteMessage(message_first.message_id);
             await ctx.deleteMessage(message_second.message_id);
-          await ctx.deleteMessage(message_third.message_id);
-          await ctx.sendSticker(ST_SENSE);
+            await ctx.deleteMessage(message_third.message_id);
+            await ctx.sendSticker(ST_SENSE);
+          }
           break;
         default:
           await ctx.reply(MS_MAIN_ACTION);
